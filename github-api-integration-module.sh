@@ -10,6 +10,8 @@
 #   Please provide your github token and rest api to the script as input
 #
 #
+# Forked from https://github.com/devops-by-examples/Shell and Need to contribute from Abhinav Pail .
+# added this line manually in mygitbranch from github UI . Again adding this line.
 ################################
 
 if [ ${#@} -lt 2 ]; then
