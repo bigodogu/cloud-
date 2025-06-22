@@ -12,7 +12,7 @@
 #
 ################################
 
-if [ ${#@} -lt 4 ]; then
+if [ ${#@} -lt 8 ]; then
     echo "usage: $0 [your github token] [REST expression]"
     exit 1;
 fi
