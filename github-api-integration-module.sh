@@ -1,6 +1,6 @@
 #!/bin/bash
 ################################
-# Author: Abhishek
+# Author: Abhishek Veeramalla
 # Version: v1
 #
 #
@@ -11,6 +11,7 @@
 #
 #
 ################################
+###
 
 if [ ${#@} -lt 2 ]; then
     echo "usage: $0 [your github token] [REST expression]"
