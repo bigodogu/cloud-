@@ -10,7 +10,7 @@
 #   Please provide your github token and rest api to the script as input
 #
 #
-# Commit this Description from Abhinav Pail .
+# Forked from https://github.com/devops-by-examples/Shell and Need to contribute from Abhinav Pail .
 ################################
 
 if [ ${#@} -lt 2 ]; then
