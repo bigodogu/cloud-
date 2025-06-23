@@ -1,2 +1,2 @@
 # Shell
-Schell Scriptsc for reference.
+Schell Scriptsc for reference and pratice.
