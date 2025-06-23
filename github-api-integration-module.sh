@@ -1,3 +1,7 @@
+
+
+
+#welcome to ne code
 #!/bin/bash
 ################################
 # Author: Abhishek
