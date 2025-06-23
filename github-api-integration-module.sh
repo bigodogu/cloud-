@@ -8,7 +8,7 @@
 # This script will help users to communicate and retrieve information from GitHub
 # Usage:
 #   Please provide your github token and rest api to the script as input
-#
+# I have forked the remote repo of devops-by-example/shell to contribute more chnages to it as i am learning the git clone and git fork commands in real-time scenario besed.
 #
 ################################
 
