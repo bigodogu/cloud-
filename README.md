@@ -1,2 +1,2 @@
 # Shell
-Schell Scripts for reference only to verify.
+Schell Scripts for reference and practice.
