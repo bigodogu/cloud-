@@ -1,6 +1,6 @@
 #!/bin/bash
 ################################
-# Author: naveen
+# Author: TNK
 # Version: v1
 #
 #
