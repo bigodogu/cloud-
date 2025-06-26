@@ -1,3 +1,4 @@
 # Shell
 Schell Scripts
-Git fetch
+Git fetch done 
+Git Pull
