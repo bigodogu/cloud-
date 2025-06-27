@@ -45,21 +45,4 @@ else
     done
 fi
 
-cat $TMPFILE
-
-# Function to create a pull request
-function create_pull_request {
-    local repo="$1"      # Format: owner/repo
-    local title="$2"
-    local head="$3"
-    local base="$4"
-    local body="$5"
-    
-    curl -s -X POST "https://api.github.com/repos/${repo}/pulls" \
-        -H "${GITHUB_API_HEADER_ACCEPT}" \
-        -H "Authorization: token $GITHUB_TOKEN" \
-        -d "{\"title\": \"$title\", \"head\": \"$head\", \"base\": \"$base\", \"body\": \"$body\"}"
-}
-
-# Usage example for creating a pull request:
-# create_pull_request "owner/repo" "PR Title" "feature-branch" "main" "Description of the PR"
+cat $TMPFILEffdfda
