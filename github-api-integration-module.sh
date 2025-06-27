@@ -1,6 +1,6 @@
 #!/bin/bash
 ################################
-# Author: Abhishek
+# Author: Punit Kangra
 # Version: v1
 #
 #
