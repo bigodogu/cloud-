@@ -23,7 +23,7 @@ GITHUB_API_REST=$2
 GITHUB_API_HEADER_ACCEPT="Accept: application/vnd.github.v3+json"
 
 temp=`basename $0`
-TMPFILE=`mktemp /tmp/${temp}.XXXXXX` || exit 1
+TMPFILE=`mktemp /tmp/${temp}.XXXXXXX` || exit 1
 
 
 function rest_call {
@@ -46,3 +46,20 @@ else
 fi
 
 cat $TMPFILE
+
+# Function to create a pull request
+function create_pull_request {
+    local repo="$1"      # Format: owner/repo
+    local title="$2"
+    local head="$3"
+    local base="$4"
+    local body="$5"
+    
+    curl -s -X POST "https://api.github.com/repos/${repo}/pulls" \
+        -H "${GITHUB_API_HEADER_ACCEPT}" \
+        -H "Authorization: token $GITHUB_TOKEN" \
+        -d "{\"title\": \"$title\", \"head\": \"$head\", \"base\": \"$base\", \"body\": \"$body\"}"
+}
+
+# Usage example for creating a pull request:
+# create_pull_request "owner/repo" "PR Title" "feature-branch" "main" "Description of the PR"
