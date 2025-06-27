@@ -1,2 +1,9 @@
 # Shell
-Schell Scripts
+Schell Scripts 
+docker
+kubernetes 
+terraform 
+ansible
+prometheus
+grafana
+
