@@ -1,2 +1,2 @@
 # Shell
-Schell Scripts updated for refrence
+Schell Scripts updated for refrence and practice
