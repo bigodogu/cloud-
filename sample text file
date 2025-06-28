@@ -1,0 +1,4 @@
+this a simple practice scenario to practice  git fork, clone and brancing and filllay create pull request to the original repo
+git form is used to create a copy of the original repo underyour name space in github ,excecially when you dont have write access to the original repo so you can add your contribution is yoou fork repo and create a pull request
+while git clone create a copy of the repo in local machine to work on and push your changes to orinal repo directly
+in real time both are used together
