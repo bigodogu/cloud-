@@ -1,2 +1,2 @@
 # Shell
-Schell Scripts
+Schell Scripts are good for automate the tasks.
