@@ -45,4 +45,5 @@ else
     done
 fi
 
+#Display the contents of TMPFILE
 cat $TMPFILE
