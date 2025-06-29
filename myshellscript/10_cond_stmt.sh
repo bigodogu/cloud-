@@ -1,0 +1,10 @@
+#!/bin/bash
+#
+#
+read -p  "enter your marks: " marks
+if [[ $marks -gt 50 ]]
+then
+	echo "YOU ARE PASS, HURRAYYYYYY"
+else
+	echo "YOU ARE FAIL, ??????????????????"
+fi
