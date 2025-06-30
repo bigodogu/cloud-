@@ -1,5 +1,7 @@
 #!/bin/bash
 ################################
+# Course Student: This is an update to check my fork-clone-pull workflow
+################################
 # Author: Abhishek
 # Version: v1
 #
