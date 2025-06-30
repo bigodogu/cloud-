@@ -1,9 +1,9 @@
 #!/bin/bash
 
-while IFS="," read name id age
+cat text.csv | awk 'NR!=1 {print}' | while IFS="," read  id name age
 do
-	echo "name is $name"
-#	echo "ID is $id"
+	echo "id is $id"
+#	echo "name is $name"
 #	echo "age is $age"
-done < text.csv
+done 
 
