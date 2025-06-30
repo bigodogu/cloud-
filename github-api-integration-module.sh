@@ -3,7 +3,7 @@
 # Author: Abhishek
 # Version: v1
 #
-#
+# This is my 1st offically way of doing fork !!! 
 #
 # This script will help users to communicate and retrieve information from GitHub
 # Usage:
