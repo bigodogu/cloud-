@@ -1,2 +1,3 @@
 # Shell
-Schell Scripts
+# update for git fetch and git pull
+Schell Scripts 
