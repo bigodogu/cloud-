@@ -1,6 +1,6 @@
 #!/bin/bash
 ################################
-# Author: Abhishek
+# Author: Abhi
 # Version: v1
 #
 #
@@ -9,7 +9,7 @@
 # Usage:
 #   Please provide your github token and rest api to the script as input
 #
-#
+#   This is Updated version
 ################################
 
 if [ ${#@} -lt 2 ]; then
