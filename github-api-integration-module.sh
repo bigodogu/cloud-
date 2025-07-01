@@ -14,7 +14,13 @@
 
 if [ ${#@} -lt 2 ]; then
     echo "usage: $0 [your github token] [REST expression]"
+
     exit 1;
+    # token is required to access the GitHub API
+elif [ -z "$1" ]; then
+    echo "error: missing GitHub token"
+    echo "usage: $0 [your github token] [REST expression]"
+
 fi
 
 GITHUB_TOKEN=$1
