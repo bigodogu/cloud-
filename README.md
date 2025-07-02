@@ -1,2 +1,2 @@
 # Shell
-Schell Scripts for practice and learning
+Schell Scripts for practice and learnings
