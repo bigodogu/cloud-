@@ -1,2 +1,2 @@
 # Shell
-Schell Scripts for reference 6th July
+Schell Scripts for example
