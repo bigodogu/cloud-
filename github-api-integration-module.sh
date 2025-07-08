@@ -4,6 +4,7 @@
 # Version: v1
 #
 #
+#updated this for learning purpose
 #
 # This script will help users to communicate and retrieve information from GitHub
 # Usage:
