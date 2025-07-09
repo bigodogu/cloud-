@@ -12,9 +12,20 @@
 #
 ################################
 
-if [ ${#@} -lt 2 ]; then
-    echo "usage: $0 [your github token] [REST expression]"
-    exit 1;
+# Help flag check (must come before argument validation)
+if [[ "$1" == "--help" || "$1" == "-h" ]]; then
+    echo "📘 Usage:"
+    echo "  $0 <GITHUB_TOKEN> <REST_API_PATH>"
+    echo "🔁 Example:"
+    echo "  $0 ghp_xxx /users/octocat/repos"
+    exit 0
+fi
+
+# Validate argument count
+if [ $# -lt 2 ]; then
+    echo "❌ Error: Missing required arguments."
+    echo "Run '$0 --help' for usage instructions."
+    exit 1
 fi
 
 GITHUB_TOKEN=$1
