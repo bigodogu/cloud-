@@ -30,3 +30,10 @@ This shell script enables users to interact with the GitHub REST API using a per
 ```bash
 ./github_api_fetch.sh <GITHUB_TOKEN> <GITHUB_REST_API_ENDPOINT>
 
+```
+
+## Example
+
+    ./github_api_fetch.sh ghp_YourTokenHere /users/octocat/repos
+
+This example fetches the list of public repositories for the GitHub user octocat.
