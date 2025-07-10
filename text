@@ -1,0 +1,6 @@
+difference between gitclone and gitfork?
+git fork : Makes a copy of a repo under your GitHub (or GitLab, etc.) account.
+           Used when you want to contribute to someone else’s project but don’t            have write access.
+
+git clone: Makes a local copy of a repo on your computer. 
+           Used to work with any repo locally.
