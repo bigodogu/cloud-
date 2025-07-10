@@ -12,10 +12,21 @@
 #
 ################################
 
-if [ ${#@} -lt 2 ]; then
-    echo "usage: $0 [your github token] [REST expression]"
-    exit 1;
+# Check if user asked for help
+if [[ "$1" == "--help" || "$1" == "-h" ]]; then
+    echo "Usage: $0 <GITHUB_TOKEN> <REST_API_PATH>"
+    echo "Example: $0 ghp_xxx /users/octocat/repos"
+    exit 0
 fi
+
+# Then check if enough arguments were passed
+if [ $# -lt 2 ]; then
+    echo "❌ Error: Missing arguments."
+    echo "Usage: $0 <GITHUB_TOKEN> <REST_API_PATH>"
+    echo "Example: $0 ghp_xxx /users/octocat/repos"
+    exit 1
+fi
+
 
 GITHUB_TOKEN=$1
 GITHUB_API_REST=$2
