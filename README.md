@@ -1,2 +1,2 @@
 # Shell
-Schell Scripts Testing the fork
+Schell Scripts Testing the fork and git merge vs git pull
