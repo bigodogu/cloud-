@@ -13,3 +13,5 @@ commands:
 - git merge <branch-name or commit Id>
 
 for direct without confirming, use git pull [git pull = git fetch + git merge]
+commands:
+- git pull origin <name-of-the-branch>
