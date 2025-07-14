@@ -12,4 +12,4 @@ commands:
 - git log <branch-name from above command> [shows changes made
 - git merge <branch-name or commit Id>
 
-for direct without confirming, use git pull [git pull = git fetch + git merge
+for direct without confirming, use git pull [git pull = git fetch + git merge]
