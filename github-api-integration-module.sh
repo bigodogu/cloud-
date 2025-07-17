@@ -10,6 +10,7 @@
 #   Please provide your github token and rest api to the script as input
 #
 #
+# assignment for git fork and clone.
 ################################
 
 if [ ${#@} -lt 2 ]; then
