@@ -8,7 +8,7 @@
 # This script will help users to communicate and retrieve information from GitHub
 # Usage:
 #   Please provide your github token and rest api to the script as input
-#
+# 
 #
 ################################
 
@@ -43,6 +43,11 @@ else
     for p in `seq 1 $last_page`; do
         rest_call "https://api.github.com${GITHUB_API_REST}?page=$p"
     done
+fi
+# Check if curl was successful
+if [ $? -ne 0 ]; then
+  echo "API call failed. Please check your token and REST expression."
+  exit 2
 fi
 
 cat $TMPFILE
