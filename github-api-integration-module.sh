@@ -1,4 +1,4 @@
-#!/bin/bash
+ #!/bin/bash
 ################################
 # Author: Abhishek
 # Version: v1
@@ -11,7 +11,8 @@
 #
 #
 ################################
-
+echo "Hey buddy! how are you?"
+echo "This line was added in feature branch"
 if [ ${#@} -lt 2 ]; then
     echo "usage: $0 [your github token] [REST expression]"
     exit 1;
