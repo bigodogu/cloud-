@@ -1,0 +1,4 @@
+bash
+CopyEditecho -e "#!/bin/bash\n echo 'Hello from my first PR!'" > hello.sh
+chmod +x hello.sh
+git add hello.sh
