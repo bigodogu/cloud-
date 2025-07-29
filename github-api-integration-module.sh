@@ -4,11 +4,17 @@
 # Version: v1
 #
 #
+#**
+#
+#Yash Singh
+#Hello Radha Rani ji
 #
 # This script will help users to communicate and retrieve information from GitHub
 # Usage:
 #   Please provide your github token and rest api to the script as input
 #
+#
+#Hello this is update for the desccription part only
 #
 ################################
 
