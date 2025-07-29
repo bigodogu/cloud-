@@ -14,6 +14,8 @@
 #   Please provide your github token and rest api to the script as input
 #
 #
+#Hello this is update for the desccription part only
+#
 ################################
 
 if [ ${#@} -lt 2 ]; then
