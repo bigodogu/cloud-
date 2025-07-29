@@ -7,6 +7,7 @@
 #**
 #
 #Yash Singh
+#Hello Radha Rani ji
 #
 # This script will help users to communicate and retrieve information from GitHub
 # Usage:
