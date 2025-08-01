@@ -1,3 +1,3 @@
 # Shell
 Schell Scripts
-update description for fetch
+update description for pull
