@@ -9,6 +9,7 @@
 # Usage:
 #   Please provide your github token and rest api to the script as input
 #
+# Hello - test line
 ################################
 
 if [ ${#@} -lt 2 ]; then
