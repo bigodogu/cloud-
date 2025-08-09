@@ -10,7 +10,16 @@
 #   Please provide your github token and rest api to the script as input
 #
 #
-################################
+<<<<<<< HEAD
+#
+#
+############################################################
+=======
+#########################################################
+>>>>>>> 4a73f54 (updateddiscriptionshell)
+=======
+#########################################################
+>>>>>>> 55379e1f71b6897bb30ea359387f87f95d36d243
 
 if [ ${#@} -lt 2 ]; then
     echo "usage: $0 [your github token] [REST expression]"
