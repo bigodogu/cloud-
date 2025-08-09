@@ -9,7 +9,7 @@
 # Usage:
 #   Please provide your github token and rest api to the script as input
 #
-#
+# This fork is created by shiva 
 ################################
 
 if [ ${#@} -lt 2 ]; then
