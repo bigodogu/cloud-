@@ -46,3 +46,5 @@ else
 fi
 
 cat $TMPFILE
+
+echo "Hello DevOps"
