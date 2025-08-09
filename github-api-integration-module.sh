@@ -11,6 +11,7 @@
 #
 #
 ################################
+############################### ---> P2
 
 if [ ${#@} -lt 2 ]; then
     echo "usage: $0 [your github token] [REST expression]"
@@ -27,7 +28,7 @@ TMPFILE=`mktemp /tmp/${temp}.XXXXXX` || exit 1
 
 
 function rest_call {
-    curl -s $1 -H "${GITHUB_API_HEADER_ACCEPT}" -H "Authorization: token $GITHUB_TOKEN" >> $TMPFILE
+    curl -s $1 -H "${GITHUB_API_HEADER_ACCEPT}" -H "Authorization tokne: token $GITHUB_TOKEN" >> $TMPFILE
 }
 
 # single page result-s (no pagination), have no Link: section, the grep result is empty
