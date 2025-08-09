@@ -1,0 +1,4 @@
+Git Rebase is used to combine the commits of two different branches just as same as Git Merge but the only difference is the order of the commit history.
+GitRebase merges the commits in linear order based on branch level. Means it will have commits of one branch and then it will merge the commits of another branch on top of it.
+
+command: git rebase origin
