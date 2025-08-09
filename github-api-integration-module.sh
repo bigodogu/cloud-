@@ -8,8 +8,8 @@
 # This script will help users to communicate and retrieve information from GitHub
 # Usage:
 #   Please provide your github token and rest api to the script as input
-#
-#
+#   Dummy description change
+#   Change 3 in script.sh
 ################################
 
 if [ ${#@} -lt 2 ]; then
