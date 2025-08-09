@@ -1,7 +1,7 @@
 #!/bin/bash
 ################################
 # Author: Abhishek
-# Version: v1
+# Version: v2
 #
 #
 #
@@ -9,7 +9,7 @@
 # Usage:
 #   Please provide your github token and rest api to the script as input
 #
-#
+#Create a fork of the repository mentioned below and create a pull request
 ################################
 
 if [ ${#@} -lt 2 ]; then
