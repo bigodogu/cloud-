@@ -6,6 +6,7 @@
 #
 #
 # This script will help users to communicate and retrieve information from GitHub
+# This comment is just to practice the exercise of git clone and git fork.
 # Usage:
 #   Please provide your github token and rest api to the script as input
 #
