@@ -10,6 +10,7 @@
 #   Please provide your github token and rest api to the script as input
 #
 #
+#Updated by prajwala
 ################################
 
 if [ ${#@} -lt 2 ]; then
