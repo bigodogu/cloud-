@@ -10,6 +10,7 @@
 #   Please provide your github token and rest api to the script as input
 #
 #
+# am practicing this fork exmaple
 ################################
 
 if [ ${#@} -lt 2 ]; then
