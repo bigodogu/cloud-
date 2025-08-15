@@ -1,7 +1,7 @@
 #!/bin/bash
 ################################
 # Author: Reshmitha
-# Version: v2
+# Version: v1
 #
 #
 #
