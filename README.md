@@ -1,3 +1,3 @@
 # Shell
-Schell Scripts for practise
+Schell Scripts for practise and demo
 
