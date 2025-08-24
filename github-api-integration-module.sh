@@ -10,6 +10,7 @@
 #   Please provide your github token and rest api to the script as input
 #
 #
+#This is a test to check if pull request is working or not
 ################################
 
 if [ ${#@} -lt 2 ]; then
