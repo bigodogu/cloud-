@@ -10,7 +10,7 @@
 #   Please provide your github token and rest api to the script as input
 #
 #
-# Adding a dummy line
+# Added a dummy line
 ################################
 
 if [ ${#@} -lt 2 ]; then
