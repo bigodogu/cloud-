@@ -1,12 +1,15 @@
-#!/bin/bash
+i#!/bin/bash
 ################################
 # Author: Abhishek
 # Version: v1
 #
 #
 #
-# This script will help users to communicate and retrieve information from GitHub
-# Usage:
+I am updating the script
+# I am updating the description
+# his script will help users to communicate and retrieve information from GitHub
+# 
+# iUsage:
 #   Please provide your github token and rest api to the script as input
 #
 #
