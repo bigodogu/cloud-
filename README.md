@@ -1,4 +1,4 @@
 # Shell
-Schell Scripts
+Schell Scripts for practising.
 #Including random texts
 alskdfjlsfjds
