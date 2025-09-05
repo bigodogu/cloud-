@@ -1,0 +1,33 @@
+AMI stand for amazon machine image
+
+This image contains what operating system and software we want to create instances.
+
+3 sources of AMI'S
+1 AWS PROVIDED
+2 AWS MARKET PLACE
+3 CUSTOMIZED AMI created bu user need or present in community
+
+
+
+* Types of EC2 instances:
+m (m4.m5,m6) is used for general puropse 
+c (c4,c5,c5n) is used for compute optimized puropse
+r (r4,r5n,r5a) memory RAM optimized EC2 instances
+g (g3,g4) graphic optimized EC2 instances
+i (i3) i/o storage optimized EC2 instances
+
+
+*security grouop
+SG is virtual firewall that control in bound and out bound call going from or going to aws resources.
+
+
+* Key pairs
+It provides security to the EC2 instances.
+Types of key
+public key is stored in EC2 instance
+private key is stored by cutomer or user
+
+
+* Elastic IP address is used to provide constant ip address to public ip
+if we create elastic ip address we will be charged for it if it is not allocate to ec2 instances
+
