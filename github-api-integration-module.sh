@@ -22,6 +22,7 @@ GITHUB_API_REST=$2
 
 GITHUB_API_HEADER_ACCEPT="Accept: application/vnd.github.v3+json"
 updatedSecOpsDesscription
+UpdatedSecOpsdescription01fully
 temp=`basename $0`
 TMPFILE=`mktemp /tmp/${temp}.XXXXXX` || exit 1
 
