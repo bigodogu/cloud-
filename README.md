@@ -1,2 +1,2 @@
 # Shell
-Schell Scripts and
+Schell Scripts
