@@ -1,0 +1,115 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+#trigger:
+#- main
+#- dev
+
+#pool:
+#  vmImage: ubuntu-latest
+
+#steps:
+#- script: echo Hello, world!
+#  displayName: 'Run a one-line script'
+
+#- script: |
+#    echo Add other tasks to build, test, and deploy your project.
+#    echo See https://aka.ms/yaml
+#  displayName: 'Run a multi-line script'
+
+
+# azure-pipelines.yml
+trigger:
+  branches:
+    include:
+      - dev
+      - main
+
+stages:
+  - stage: DeployToDev
+    displayName: 'Deploy to Dev Environment'
+    condition: eq(variables['Build.SourceBranchName'], 'dev')
+    variables:
+      - group: SF-Dev-Variables
+    jobs:
+      - job: DeployDev
+        displayName: 'Deploy to Salesforce Dev'
+        steps:
+          - checkout: self
+
+          - task: DownloadSecureFile@1
+            name: GetJWTKey
+            inputs:
+              secureFile: 'server.key'
+
+          - task: NodeTool@0
+            inputs:
+              versionSpec: '18.x'
+              checkLatest: true
+
+          - script: |
+              npm install -g sfdx-cli
+            displayName: 'Install Salesforce CLI'
+
+          - script: |
+              sfdx auth:jwt:grant ^
+                --clientid $(SF_CLIENT_ID) ^
+                --jwtkeyfile $(GetJWTKey.secureFilePath) ^
+                --username $(SF_USERNAME) ^
+                --instanceurl $(SF_INSTANCE_URL)
+            displayName: 'Authenticate to Salesforce (Dev)'
+
+          - script: |
+              sfdx force:source:deploy ^
+                --sourcepath force-app ^
+                --targetusername $(SF_USERNAME) ^
+                --ignorewarnings ^
+                --wait 10
+            displayName: 'Deploy Source to Dev Org'
+
+  - stage: DeployToProd
+    displayName: 'Deploy to Production Environment'
+    condition: eq(variables['Build.SourceBranchName'], 'main')
+    variables:
+      - group: SF-Prod-Variables
+    jobs:
+      - deployment: DeployProd
+        displayName: 'Production Deployment'
+        environment: 'Production'  # Uses Azure DevOps Environment
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - checkout: self
+
+                - task: DownloadSecureFile@1
+                  name: GetJWTKey
+                  inputs:
+                    secureFile: 'server.key'
+
+                - task: NodeTool@0
+                  inputs:
+                    versionSpec: '18.x'
+                    checkLatest: true
+
+                - script: |
+                    npm install -g sfdx-cli
+                  displayName: 'Install Salesforce CLI'
+
+                - script: |
+                    sfdx auth:jwt:grant ^
+                      --clientid $(SF_CLIENT_ID) ^
+                      --jwtkeyfile $(GetJWTKey.secureFilePath) ^
+                      --username $(SF_USERNAME) ^
+                      --instanceurl $(SF_INSTANCE_URL)
+                  displayName: 'Authenticate to Salesforce (Prod)'
+
+                - script: |
+                    sfdx force:source:deploy ^
+                      --sourcepath force-app ^
+                      --targetusername $(SF_USERNAME) ^
+                      --ignorewarnings ^
+                      --wait 10
+                  displayName: 'Deploy Source to Production Org'
