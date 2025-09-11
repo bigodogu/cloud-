@@ -1,3 +1,3 @@
 # Shell
-Schell Scripts
-Update this file when changes are made
+Schell Scripts for reference and practice
+
