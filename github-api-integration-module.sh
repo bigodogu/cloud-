@@ -1,4 +1,4 @@
-#!/bin/bash
+#
 ################################
 # Author: Abhishek
 # Version: v1
@@ -9,8 +9,8 @@
 # Usage:
 #   Please provide your github token and rest api to the script as input
 #
-#
-################################
+#  Forked by Yash :) Testing 1
+###############################
 
 if [ ${#@} -lt 2 ]; then
     echo "usage: $0 [your github token] [REST expression]"
@@ -45,4 +45,11 @@ else
     done
 fi
 
-cat $TMPFILE
+c
+:wq!
+
+
+exit
+
+at
+$TMPFILE
