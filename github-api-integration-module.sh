@@ -9,6 +9,7 @@
 # Usage:
 #   Please provide your github token and rest api to the script as input
 #
+#Updating the decription to understand git fork
 #
 ################################
 
