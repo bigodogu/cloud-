@@ -44,5 +44,5 @@ else
         rest_call "https://api.github.com${GITHUB_API_REST}?page=$p"
     done
 fi
-
+#change this to testing purposes
 cat $TMPFILE
