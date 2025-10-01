@@ -1,0 +1,197 @@
+which ansible version in the prod in hdfclife
+As of Aug 2025, latest is Ansible 2.14 or higher
+Originally by Michael DeHaan, now under Red Hat.
+- Module copied to /home/<user>/.ansible/tmp/ansible-<random>
+    Temporary files are deleted automatically after execution
+- /etc/puppet/puppet.conf → server = puppet-master.domain  - pull based 
+-v or -vvv full verbod=se executaion of playbook
+---------
+installtion:(tep-by-step for RHEL 8 / Amazon Linux 2 / Fedora
+sudo yum update -y 
+sudo yum install python3 -y
+pip3 install ansible
+
+# OR via package manager (EPEL repo for RHEL/CentOS)
+sudo amazon-linux-extras enable ansible2
+sudo yum install ansible -y
+ansible --version
+----------------
+Parallelism	Multiple connections open in parallel (default forks = 5)
+Each module has built-in idempotency (won’t install nginx twice)
+Output is converted to JSON and sent back to control node   (outis in JSON formt)
+Task status shown	✅ ok, ❗changed, ❌failed, 🔄skipped
+flow:::: Same flow repeats	Copy → Execute → Collect Output → Display → Delete
+------------------------
+Precedence Order (Which One Is Picked?) - inventry 
+Order	Inventory Source	Priority
+1️⃣	-i option in CLI	🔺 Highest
+2️⃣	inventory = ... in ansible.cfg	🔼 Medium
+3️⃣	Default /etc/ansible/hosts	🔽 Lowest
+
+inventory: INI format and yaml format 
+── inventory/
+│   ├── dev.ini
+│   ├── stage.ini
+│   └── prod.ini
+And inside ansible.cfg:
+
+[defaults]
+inventory = inventory/dev.
+ini
+
+---------------------------------------
+In this example, two plays are used — one for web and one for DB.
+is --- mandatory?	Yes, it indicates the beginning of the YAML document.
+- Ansible 2.10+ introduced collections, which group modules under namespaces. S
+     "ansible.builtin.user:" insted of onlu user  older version of ansible: user module you can use.
+--------------------
+modules:
+- name: Start and enable a service
+    ansible.builtin.service:
+      name: nginx
+      state: started
+      enabled: yes
+- name: Run custom shell command
+  hosts: all
+  tasks:
+    - name: Run script
+      ansible.builtin.shell: |
+        cd /opt/scripts
+        ./deploy.sh
+
+    shell commands for shell script and command for single line comamand 
+
+----i am showing teh in th horizental:
+tasks:
+  - name: Create user               | ansible.builtin.user: name=appadmin shell=/bin/bash state=present
+  - name: Copy file                 | ansible.builtin.copy: src=/home/ansible/nginx.conf dest=/etc/nginx/nginx.conf mode=0644 owner=root
+  - name: Install package (yum)     | ansible.builtin.yum: name=httpd state=present/started/absent
+  - name: Install package (apt)     | ansible.builtin.apt: name=nginx state=present update_cache=yes
+  - name: Run shell command         | ansible.builtin.shell: cmd="df -h > /tmp/disk_usage.txt"
+  - name: Create directory/file          | ansible.builtin.file: path=/opt/myapp/logs state=directory/touch owner=appadmin mode=0755
+  - name: Create file with content  | ansible.builtin.copy: dest=/etc/motd content="Welcome!" mode=0644
+  - name: Download file             | ansible.builtin.get_url: url=https://example.com/app.tar.gz dest=/tmp/app.tar.gz
+  - name: Extract archive           | ansible.builtin.unarchive: src=/tmp/app.tar.gz dest=/opt/myapp/ remote_src=yes
+  - name: Reboot server             | ansible.builtin.reboot: reboot_timeout=300
+----------------------------------------------------------
+- Built-in modules path:
+Usually inside the Python site-packages path like:
+/usr/lib/pythonX.Y/site-packages/ansible/modules/
+
+: you can check module loacation:
+ansible-doc -t module -l | grep user      (ansible-docc -l it will show all module)
+
+ChatGPT said:
+✅ Yes, Ansible modules are installed by default with Ansible.
+🗂️ Built-in modules are stored in: /usr/lib/python3.X/site-packages/ansible/modules/
+🌐 External modules (collections) go in: ~/.ansible/collections/
+📥 Install modules using: ansible-galaxy collection install <name>
+🧰 Custom modules can be placed in a library/ folder near your playbook.
+
+----------------------------------------------------------------
+✅ Multi-line comment: YAML does not have a native multiline comment syntax. Use # on each line:
+single line #
+
+-------------------------------------------------------------
+
+shell	Run shell commands/scripts	✅ YES	✅ YES (like `
+command	Run simple commands	⚠️ NO	❌ NO (no shell features allowed)   - no shell script allowed 
+- ansible <host/group> -m shell -a "bash /path/to/script.sh"
+- name: Run shell script
+  ansible.builtin.shell: "bash /path/to/script.sh"
+
+command: ansible all -m command -a "ls -l /tmp"
+ hosts: all
+  tasks:
+    - name: List files in /tmp using command
+      ansible.builtin.command: ls -l /tmp
+❌ Pipes (|), redirection (>, >>), variables ($VAR), or && won't work here.
+
+whereas in shell allow: 
+ hosts: all
+  tasks:
+    - name: List files in /tmp using command
+      ansible.builtin.command: ls -l /tmp
+ Pipes (|), redirection (>, >>), variables ($VAR), or && won't work here.  plus shell script will work.
+------------------------------------------------------------------
+ansible-cfg :
+[defaults]
+inventory=./inventory                 # (Optional) Inventory file path; default is /etc/ansible/hosts
+remote_user=ec2-user                  # (Optional) SSH user; default is current system user
+private_key_file=~/.ssh/key.pem       # (Mandatory for key-based auth); required to avoid auth failure
+host_key_checking=False               # (Optional) Skips SSH key prompts; useful for automation
+timeout=30                            # (Optional) SSH timeout; default is 10 seconds
+retry_files_enabled=False             # (Optional) Disables .retry files; prevents clutter
+roles_path=./roles                    # (Optional) Custom roles directory; else default paths used
+forks=10                              # (Optional) Number of parallel hosts; default is 5
+gathering=smart                       # (Optional) Controls fact gathering; default is smart
+ask_pass=False                        # (Optional) Don't prompt for SSH password; uses key instead
+any_errors_fatal=False                # (Optional) Run other hosts even if one fails; default is False
+
+[privilege_escalation]
+become=True                           # (Optional) Enables privilege escalation like sudo
+become_method=sudo                    # (Optional) Method to escalate; default is sudo
+become_user=root                      # (Optional) Target user; default is root
+become_ask_pass=False                 # (Optional) Don't ask for sudo password; default is False
+
+[ssh_connection]
+ssh_args=-o ControlMaster=auto -o ControlPersist=60s    # (Optional) SSH multiplexing for speed
+control_path=~/.ansible/cp/ansible-ssh-%%h-%%p-%%r       # (Optional) Path to store control sockets
+pipelining=True                                         # (Optional) Reduces SSH operations; improves performance
+scp_if_ssh=smart                                        # (Optional) File copy method; default is smart
+retries=3                                               # (Optional) SSH retry attempts; default is 0
+
+----------------------------------------------------------
+Gathers system details (OS, IP, CPU, memory, disk, network, etc.) as ansible_facts before running tasks. (from all target servers)
+Use gather_facts: no to save time if you don’t need any system info in that playbook.
+-------------------------------------------------
+ANSIBLE playbook:host and task madtory 
+| 🔢 | ✅ Note                                 | 💡 Why It Matters                      | 🛠️ Troubleshooting Tip                | 🎯 Interview Question                        | ✅ Interview Answer                                                                                     |
+| -- | -------------------------------------- | -------------------------------------- | -------------------------------------- | -------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| 1  | Start with `---`                       | YAML standard for file start           | YAML parse error if missing            | Is `---` mandatory in YAML?                  | Not mandatory, but a good YAML practice to denote the start of a document.                             |
+| 2  | Use **spaces**, not tabs               | YAML is indentation-sensitive          | Use `cat -A` to detect tabs            | What happens if tabs are used in YAML?       | YAML will throw indentation or parsing errors; spaces are required.                                    |
+| 3  | Define `hosts:`                        | Targets the inventory/group            | Error: `No hosts matched`              | Can `hosts` be a group or single host?       | Yes, `hosts` can point to an inventory group or a single host.                                         |
+| 4  | Use `gather_facts: no` when not needed | Avoids unnecessary delay               | Use `setup` module to collect manually | What does `gather_facts` do internally?      | It runs the `setup` module and collects system data like IPs, OS, memory, etc.                         |
+| 5  | Use `become: true` for root            | Enables sudo/root operations           | Task fails? Check sudo rights          | How does Ansible do privilege escalation?    | By using `become: true`, it invokes sudo or other methods defined in config.                           |
+| 6  | Follow `snake_case` for vars           | Prevents errors, improves readability  | Avoid `-` in var names                 | Any variable naming rules in Ansible?        | Use lowercase with underscores, avoid hyphens and starting with digits.                                |
+| 7  | Use `name:` in each task               | Improves logs and traceability         | Generic logs without it                | Why are task names helpful?                  | Helps in identifying and debugging specific steps during execution.                                    |
+| 8  | Use **roles** to organize tasks        | Cleaner structure, reuse logic         | `roles_path` misconfigured?            | What’s the use of roles in Ansible?          | Roles modularize configuration by splitting into tasks, vars, handlers, etc.                           |
+| 9  | Run `--syntax-check` first             | Prevents runtime errors                | Detects errors early                   | How do you verify a playbook before running? | Use `ansible-playbook play.yml --syntax-check`.                                                        |
+| 10 | Use `tags:` to filter execution        | Improves speed during debugging        | Task skipped? Tag mismatch.            | How to run only specific tasks?              | Use `--tags` or `--skip-tags` with `ansible-playbook`.                                                 |
+| 11 | Avoid hardcoding, use vars             | Makes playbook reusable                | Check variable source if undefined     | Ways to define variables?                    | Using `vars`, `vars_files`, inventory vars, `-e`, `set_fact`, etc.                                     |
+| 12 | Quote variables `{{ var }}`            | Prevents Jinja parsing errors          | Check unmatched or missing braces      | When to quote Ansible variables?             | Always in command lines, strings, or where parsing may be affected.                                    |
+| 13 | Use **handlers** for restarts          | Runs only when notified                | Not triggered? Check `notify:`         | How do handlers work?                        | They are triggered only when a task reports a change and uses `notify:`.                               |
+| 14 | Comment with `#`                       | Better readability and maintainability | Avoid confusion in complex logic       | How do you document a playbook?              | Use `#` comments above tasks, variables, and sections to clarify purpose.                              |
+| 15 | Use `become_user:` when needed         | Executes as specific user              | Task runs as wrong user? Check config  | `become` vs `become_user`?                   | `become: true` enables privilege escalation; `become_user` defines the target user (e.g., `postgres`). |
+
+
+------------------------------------------------------------------------------------
+| Feature         | When to Use (Purpose)                               | How to Use (Syntax)                                  | Interview Tip                                                                               | Troubleshooting Tip                                                                                                     | Sample Example                                                                                                   | Short Answer                              |
+| --------------- | --------------------------------------------------- | ---------------------------------------------------- | ------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- | ----------------------------------------- |
+| `when`          | To apply condition to a task or block               | `when: variable == 'value'`                          | Used for task-level logic. Interviewers may ask how you apply conditions in playbooks.      | If condition fails, task is skipped. Ensure correct variable/value is used.                                             | `- name: Install only if on CentOS`<br> `yum: name=httpd state=present`<br>`when: ansible_os_family == "RedHat"` | Conditional execution of tasks.           |
+| `notify`        | When a task needs to trigger a handler after change | `notify: restart apache`                             | Expect cross-question: "What happens if task has no change?" — Handler won’t trigger.       | Only triggers if task changes. If not working, ensure `changed: true` is set correctly by module or use `changed_when`. | `- name: Update config`<br> `template: src=httpd.conf dest=/etc/httpd.conf`<br>`notify: restart apache`          | Triggers handler after task changes.      |
+| `handlers`      | Define reusable tasks triggered by `notify`         | Under `handlers:` section at play end                | Ask about idempotent tasks. Handlers run **once per play** even if notified multiple times. | Make sure handler name matches `notify`. Misnamed handlers won't run.                                                   | `handlers:`<br> `- name: restart apache`<br>`service: name=httpd state=restarted`                                | Reusable tasks triggered on change.       |
+| `tags`          | To run only specific tasks in playbooks             | `tags: [install, config]`                            | Common in large playbooks. Expect Qs like: "How to run only install tasks?"                 | If tag isn’t found, no task runs. Use `--list-tags` to preview.                                                         | `- name: Install package`<br>`yum: name=httpd state=present`<br>`tags: install`                                  | Run specific tasks using `--tags`.        |
+| `ansible-vault` | To encrypt secrets in files or playbooks            | `ansible-vault encrypt <file>`<br>`--ask-vault-pass` | Interviewers often ask: "How do you handle credentials securely?" Vault is the answer.      | Vault errors: incorrect password, unreadable format. Always double-check encryption.                                    | `ansible-vault encrypt secrets.yml`<br>`ansible-playbook site.yml --ask-vault-pass`                              | Encrypt sensitive content like passwords. |
+
+---------------------------------------------------------------------------------------------------
+ANSIBLE VARIBALE PRECIDENCE:
+| 🎯 **Topic**              | 💡 **Interview Key Point**                                                 | ✅ **Example**                                 | ❓ **Possible Interview Question**                              |
+| ------------------------- | -------------------------------------------------------------------------- | --------------------------------------------- | -------------------------------------------------------------- |
+| **Extra Vars (`-e`)**     | Highest priority — overrides everything else.                              | `ansible-playbook play.yml -e "env=prod"`     | What’s the highest precedence in Ansible variables?            |
+| **set\_fact**             | Runtime-defined variable. Very high precedence, used for dynamic values.   | `set_fact: my_var: "runtime_val"`             | How can you define a variable dynamically inside a playbook?   |
+| **Task-level vars**       | High priority, used to override values within a task.                      | `- name: My Task vars: my_var: "task_val"`    | Can task-level vars override role defaults or inventory vars?  |
+| **Role vars vs defaults** | `vars/main.yml` (in roles) has higher precedence than `defaults/main.yml`. | Role: `defaults/main.yml` vs `vars/main.yml`  | What’s the difference between role defaults and role vars?     |
+| **Inventory vars**        | Group/Host vars set in inventory folders or inline inventory.              | `group_vars/webservers.yml: app_env: staging` | How do you set different variables for different hosts/groups? |
+| **Playbook vars**         | Can be used to set or override variables in a playbook-level scope.        | `vars: my_var: "playbook_val"`                | What are playbook-level vars and when are they used?           |
+| **Defaults (role)**       | Safest, lowest priority; used for fallback values.                         | `defaults/main.yml: my_var: default_val`      | Why do we use defaults in roles if they get overridden easily? |
+
+
+-------------------------------------------------------------------------------------------------
+
+
+
+
+
+"
+

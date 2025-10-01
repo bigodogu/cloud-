@@ -1,0 +1,121 @@
+1. abhishek veeramall
+2. imran
+3. all things from books and laptops 
+
+
+vop~~~~~~~~~~~~~~~~~~~~~~~`commands: How the flow in the github~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+1. Fork the Repo
+Go to the repo you want to fork, e.g.
+👉 https://github.com/devops-by-examples/Shell
+
+GitHub will create a copy under your account like:
+https://github.com/arunchincholi/Shell
+
+git clone https://github.com/arunchincholi/Shell.git
+cd Shell
+git remote -v
+git checkout -b feature-mycode
+echo "This is my test script" > test.sh
+git add test.sh
+git commit -m "Add test.sh with basic script content"
+git push origin feature-mycode
+
+7. Create a Pull Request (PR)
+Go to your fork:
+👉 https://github.com/arunchincholi/Shell
+
+You’ll see a “Compare & pull request” button. Click it.
+
+Add:
+
+Title: Added test.sh file
+Description: what this change does
+Click “Create pull request”
+==================================================================================================================
+~~~~~~~~~~~~~~~~~~how to authetiacte with https and shh~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+https:#######################################
+git clone https://github.com/username/repo.git
+username and persoanl access token 
+
+Settings
+Developer Settings
+Personal access tokens (classic)
+---store temproraly:
+git config --global credential.helper store
+
+ssh:################################################
+craete ssh-kegen >it will create public key 
+paste in the github
+Go to GitHub → Settings → SSH and GPG keys
+Click "New SSH key", paste the key and save.
+
+============================================================================================================================
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~`git featch and git pull ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
+git branch -a
+remote + lpocal
+-r only remote 
+git merger <url_rmeote>
+git merge remotes/origin/arunfetatchre
+git featch origin <name of branch>
+
+~~~~~~~~~~~~~~~~~~~~~~~~~git merge and git rebase :~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+git cherry pick - take only some changes and merger intlinere commit hosory - done by rebase (o your repository .
+
+Linear ommit history done by - rebase (i am in featchure brach 20 commit >git rebase origin main so first main 50 commit and then 20 commit of that feture branch)
+cronological commit added  : yypu will see all commit based on tha date (history what they are created)
+where? - git log (here based on time -merge  descinding.) 
+
+git merge: combined twoo branches and create new merge commmit. - based on timestamp full history- crnological order.- not serial - based on timesamp
+git rebase : linier commit histry, move the branch commits on top of another branch . first main branch and next rebase branch (on rebase brancg rebase origin/main)
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~`git branch stratergy:~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+1. TRUNK BASED STARTEGY: we are using the trunck
+main  (active developemt)
+fetfeture (feture branch - release)
+release- tag - release (create tag and create release)
+hotfix - push to main branch and notify developer to working on fetaure branch.
+
+~~~~~~~~~~~~~~~~~~~~~~`challanges you faced in ypur previous organaiztion:~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
+3 challnages:
+1. git branching strategy
+2. aceess controal
+3, .git . .gitigonre , webhook
+
+Hook	       Trigger Point            	      Key Usage
+pre-commit	 Before git commit              	Code validation,  linting, secret protection
+post-commit	After git commit	Logging,         notification, tagging
+
+~~~~~~~~~~~~~```talk about challanges you faced in recent days~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~``
+acess- controal (safe to play)
+craete branch - 200 branches -stale brancg
+git branching strategry 
+
+how:
+
+iam using the free ccount so manage acees not hsowing:
+Go to your GitHub repository.
+Click on the "Settings" tab (top right).
+On the left sidebar, click "Branches".
+Under "Branch protection rules", click "Add rule".
+In Branch name pattern, enter main or release/* or any branch.
+Enable:
+✅ Require a pull request before merging
+✅ Require approvals (1+)
+✅ Restrict who can push to matching branches
+
+
+~~~~~~~~~~~~~~~~~``how you  do handle merge conflict :~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+2 developer changes from 2 btanch with same line - merger conflict will come
+inform developer(i ma not owner of file i dont know code)- arrange mwwting with developer you can see the name in github. > resolve conflict and commit the code and commit ot and test it , merge to naib branch and create pull request for remote main branch.
+
+
+~~~~~~~~~~~~~~~~~~~~~~``ours and theris strtaegy :~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~````
+
+
+
+
+
+

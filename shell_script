@@ -1,0 +1,62 @@
+quation: LOG ROTAION
+compress logs older than 7 days
+remove logs older than 30 days and crintab 
+1. varify dircectory exss
+2. find command for 7 days(withinn30 days)
+3. find command for remove old logs (then store in ne logs)
+! -d <>   : directory doesnt exists.
+~~~~~~~~~~~~~`
+#!/bin/bash
+#
+#varibale
+log_dir="var/lib/docker/container"
+log_file="/var/lib/docker/log_rotatiooo.log
+
+if [ ! -d "$log_dir" ]; then
+        echo "[$(date)] Error log directry $log_dir does not exists " >> "log_file"
+
+
+fi
+
+#find 7 days logs
+find "$log_dir" -type f -name *.log -mtime +7 -mtime -30 ! -name "*.gz" -exec gzip  {} \; -exec echo [$(date)] compressed: {}" >> "$log_file" \;
+               - older tah 7 days but check within 30 days 
+#delete 30 days
+find "$log_dir" -type f -name *.gz -mtime +30 -exec rm -f {} \;
+
+#######################################################################################################
+
+bulk craetion linux user:
+
+as per CSV file shell script crate user and password.
+ans:
+let me tell approch first i will write script later
+1. cgeck csv file exists or not
+2. first line igonre username and password (metdata of csv) igonre 1st line no and use the loop from line no 2 and last (if i kbow 10 llines i will use for loop)
+3. use useradd command (passwd not will come because this is interactive session ) - so use the "chpasswd <username:password>"  - it will setup password.
+
+from line no-2 :
+  
+tail -n +2 user.csv>
+
+
+###############################################################################################################3
+service helth check monitor script in bash 
+
+sevices like - nginx, docker, sshd ) need to check?
+ check teh directory exsits
+2. space remove via @
+3. check like if under for and close through if condtion 
+
+##############################################################################33
+website doens load how will you investigate?
+1. port is laredy opened? service is listinh that port ?
+2. checl webservooer (service running or not systemctl status nginx)
+3. check static co tent like /var/www/html (inder index.hy=tml fiel check  (html is in the correct postion or not)
+3, check error.log (access logs also - var/log/error)
+
+############################################################################
+sed (stream edtor)
+sed '%s/oldstring/newstring/g' arun.txt
+sed '1d;5d' arun.txt    (line no 1 and line 5 will delete     i dont the last line (1d:$),  
+- sed 1d;5d : print one terminal then later use -i so it will remove >cat arun.txt (1st and last line removed)    sed -i '1d;$d' arun.txt  (not print on terminal it will update file directly.

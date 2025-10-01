@@ -1,0 +1,202 @@
+Docker
+├── 1. Docker Basics (Quick Recap)
+│   ├── Docker Architecture: CLI, Daemon, REST API
+│   ├── Docker Images vs Containers
+│   ├── Lifecycle: build → run → stop → remove
+│   ├── Important CLI: build, run, ps, stop, rm, rmi, exec, logs
+
+├── 2. Dockerfile (Interview + Troubleshooting)
+│   ├── Instructions: FROM, RUN, COPY, CMD, ENTRYPOINT, ENV, VOLUME
+│   ├── Multi-stage builds (optimize image size)
+│   ├── Common Issues:
+│   │   ├── Cache not invalidating
+│   │   ├── Incorrect CMD/ENTRYPOINT
+│   │   ├── Permissions and PATH issues
+
+├── 3. Docker Images
+│   ├── Image creation & tagging
+│   ├── Image layers, caching, squashing
+│   ├── Image size optimization
+│   ├── Vulnerability scanning (e.g., Trivy, Docker scan)
+│   ├── Common Issues:
+│   │   ├── Image bloat
+│   │   ├── Not updating from base image
+│   │   ├── Wrong tag/image pulled
+
+├── 4. Docker Containers (Heavy Troubleshooting)
+│   ├── Lifecycle states: created, running, exited, paused
+│   ├── Start/stop/restart behavior
+│   ├── Healthcheck & auto-restart policies
+│   ├── Common Issues:
+│   │   ├── Container exits immediately
+│   │   ├── Restart loops
+│   │   ├── High CPU/memory usage
+│   │   ├── Crash loop debugging (logs, inspect, strace)
+
+├── 5. Volumes & Storage (Interview + Real Issues)
+│   ├── Volume types: named, bind mount, tmpfs
+│   ├── Data persistence strategies
+│   ├── Docker volume inspect, prune, rm
+│   ├── Common Issues:
+│   │   ├── Data loss
+│   │   ├── Permission denied inside container
+│   │   ├── Read-only filesystem
+
+├── 6. Docker Networking (High-Weight in Interviews)
+│   ├── Bridge, Host, None, Overlay (for Swarm)
+│   ├── Port binding vs exposing
+│   ├── DNS in Docker
+│   ├── Inter-container communication
+│   ├── Troubleshooting:
+│   │   ├── Container can't connect outside
+│   │   ├── Port conflicts
+│   │   ├── IP tables/NAT issues
+│   │   ├── DNS resolution inside container
+
+├── 7. Logs & Debugging
+│   ├── docker logs, docker inspect
+│   ├── journalctl (for daemon), dmesg (kernel-level), syslog
+│   ├── Exec inside container: `docker exec -it`
+│   ├── Debugging with Alpine/Bash + curl/ping/tcpdump
+
+├── 8. Security (Important for Senior Interviews)
+│   ├── Dockerfile hardening (USER, no root)
+│   ├── Secrets management (avoid ENV with secrets)
+│   ├── Image scanning tools (Trivy, Grype, Docker scan)
+│   ├── Capabilities dropping
+│   ├── seccomp, apparmor profiles
+│   ├── Docker socket security risks
+│   ├── Docker Content Trust (DCT)
+│   ├── Troubleshooting:
+│   │   ├── Permissions issues
+│   │   ├── Escalation vulnerabilities
+
+├── 9. Docker Compose (Essentials only)
+│   ├── Compose file structure
+│   ├── Networks and volumes in Compose
+│   ├── Override files and env handling
+│   ├── Logs and troubleshooting multi-container apps
+
+├── 10. Docker Integration with DevOps Tools
+│   ├── Jenkins (Docker-in-Docker, builds, cleanups)
+│   ├── GitLab CI/CD
+│   ├── AppDynamics/Prometheus/Grafana agent containers
+│   ├── ECR (Push/Pull), ECS/Fargate (overview)
+│   ├── Scanning in CI pipelines
+
+├── 11. Docker Daemon (Advanced Troubleshooting)
+│   ├── /var/lib/docker layout
+│   ├── docker info / events
+│   ├── Restart Docker safely
+│   ├── Config changes in `/etc/docker/daemon.json`
+│   ├── Checking journald/syslog for errors
+│   ├── Troubleshooting:
+│   │   ├── Daemon won't start
+│   │   ├── Resource starvation
+│   │   ├── Out of disk/inodes
+│   │   ├── Overlay2 corruption
+
+├── 12. Common Real-time Scenarios
+│   ├── High CPU/Memory inside a container
+│   ├── Disk space filling in /var/lib/docker
+│   ├── Container restart loops (healthcheck failures)
+│   ├── Network not reachable from inside
+│   ├── Docker logs not working (json-file full)
+│   ├── Can’t exec or get bash in lightweight containers
+
+└── 13. Bonus: Docker Alternatives and Future Topics
+    ├── Podman vs Docker
+    ├── Containerd and CRI-O
+    ├── Rootless Docker
+    ├── BuildKit advanced use
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~``
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~```
+
+| Component    | Role                           | When it Fails                    | Troubleshooting Tip             |
+| ------------ | ------------------------------ | -------------------------------- | ------------------------------- |
+| **CLI**      | Sends command                  | Command hangs or fails           | `docker info`, check socket     |
+| **REST API** | Middleman between CLI & Daemon | API tool fails, socket issues    | `curl /var/run/docker.sock`     |
+| **Daemon**   | Executes the actual work       | No containers start, Docker down | `systemctl status docker`, logs |
+
+------
+  Permissions issue in image	Check USER in Dockerfile
+------
+  | Problem                         | How to Check / Fix                                    |
+| ------------------------------- | ----------------------------------------------------- |
+| Image doesn't exist locally     | `docker images`, try `docker pull`                    |
+| Permissions issue in image      | Check `USER` in Dockerfile                            |
+| Misconfigured CMD or ENTRYPOINT | Use `docker inspect`, fix Dockerfile                  |
+| Volume mount errors             | Check volume paths: `docker volume ls`, `ls -l /path` |
+| ENV variables missing           | Confirm `docker run -e` or `Dockerfile ENV`           |
+
+-----------------------------
+  trivy scan:install based on OS 
+# Basic scan
+trivy image nginx:1.23
+
+# Scan with only HIGH and CRITICAL issues
+trivy image --severity HIGH,CRITICAL nginx:1.23
+- Trivy scanning is used to find known security vulnerabilities (CVEs) in Docker images, filesystems, or configuration files by analyzing packages and dependencies against public vulnerability databases.
+  
+  ----------------------------
+dcker volumes:
+| Volume Type | Command Example                             | Where Stored                          | Advantages                                                       | Real-Time Usage in Prod                                   | Common Interview Points                                               |
+|-------------|----------------------------------------------|----------------------------------------|------------------------------------------------------------------|------------------------------------------------------------|------------------------------------------------------------------------|
+| Named       | -v myvolume:/data <br> docker volume create myvolume | /var/lib/docker/volumes/               | Persistent, portable, safe for multi-host use                   | Databases, shared logs/configs                             | Backup, inspect, restore, default choice in prod                      |
+| Bind Mount  | -v /host/path:/container/path               | Exact host path on host                | Real-time sync, host control, great for configs/logs            | Certs, logs, configs injection                             | When to use, file permission issues, host dependency risks            |
+| tmpfs       | --tmpfs /tmp                                | RAM only                               | Fastest, avoids disk writes, ideal for secrets/temp storage     | Cache, API tokens, temp build artifacts                    | Secure for secrets, no disk IO, when to avoid                         |
+
+| **Volume Type** | **Command Example**                                    | **Where Stored**                            | **Advantages**                                                          | **Real-Time Usage in Prod**                                             | **Common Interview Points**                                                    |
+| --------------- | ------------------------------------------------------ | ------------------------------------------- | ----------------------------------------------------------------------- | ----------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| **Named**       | `-v myvolume:/data`<br>`docker volume create myvolume` | `/var/lib/docker/volumes/` (Docker managed) | - Persistent, easy to manage<br>- Portable<br>- Safe for multi-host use | - Databases (MySQL, MongoDB)<br>- Shared logs/configs across containers | - Best choice in prod<br>- How to back up<br>- Inspect & restore volumes       |
+| **Bind Mount**  | `-v /host/path:/container/path`                        | Exact host path                             | - Full control<br>- Real-time sync with host<br>- Great for config/logs | - Log file storage<br>- External certs/configs injection                | - When to prefer bind<br>- Risks (host dependency)<br>- File permission issues |
+| **tmpfs**       | `--tmpfs /tmp`                                         | RAM only (not disk)                         | - Fastest<br>- No disk writes<br>- Secure for temp/secrets              | - API tokens<br>- Cache<br>- Temp build artifacts                       | - How tmpfs avoids disk IO<br>- Use for secrets<br>- When not to use tmpfs     |
+
+###############################################################################
+| **Network Type**           | **Command Example**                                                 | **Use Case / Behavior**                                                                                                                     | **Advantages**                                                                                         | **Real-world Usage**                                                  | **Interview + Troubleshooting Points**                                                                                                                                                                               |
+| -------------------------- | ------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Bridge (Default)**       | `docker network create mybridge`<br>`docker run --network mybridge` | - Isolated network on a single host<br>- Uses virtual Ethernet bridge (`docker0` by default)<br>- Internal DNS resolves container names     | - Easy container-to-container communication<br>- DNS support<br>- Good for dev/testing                 | - Apps with frontend-backend on same host<br>- Docker Compose default | 🔸 Why containers can’t talk?<br>🔸 Check `bridge` exists: `docker network ls`<br>🔸 `docker network inspect mybridge`<br>🔸 DNS failure → check `/etc/docker/daemon.json`                                           |
+| **Host**                   | `docker run --network host`                                         | - Shares host’s network namespace<br>- No isolation at all<br>- Skips NAT, ports                                                            | - Highest performance<br>- Useful for metrics/logging agents<br>- Low latency                          | - Prometheus exporters<br>- High-performance microservices            | 🔸 Port conflicts: container uses same port as host<br>🔸 No isolation: security concerns<br>🔸 Can't expose multiple containers on same port                                                                        |
+| **None**                   | `docker run --network none`                                         | - Container has **no network access**<br>- Loopback only<br>- No DNS, no interface                                                          | - High isolation<br>- Good for sandboxing and testing<br>- Security hardened                           | - Air-gapped processes<br>- Debugging boot-time behavior              | 🔸 Can't ping anything? That’s expected<br>🔸 Use for container initialization tests or file-processing jobs<br>🔸 Combine with volume for output                                                                    |
+| **Overlay** *(Swarm only)* | `docker network create -d overlay myoverlay`                        | - Enables multi-host container networking<br>- Built on VXLAN tunnel<br>- Uses Docker’s internal distributed KV store (Raft)                | - Cross-node communication<br>- Secure (encryption optional)<br>- Dynamic DNS<br>- Auto load-balancing | - Swarm-based microservices<br>- HA containers across VMs             | 🔸 Service not reachable? Check `docker service ps`<br>🔸 Use `docker network inspect` on all nodes<br>🔸 DNS name mismatch? Use service name not container name<br>🔸 Confirm Swarm is active with `docker node ls` |
+| **Macvlan**                | `docker network create -d macvlan ...`                              | - Assigns a **real IP** from the LAN to the container<br>- Bypasses Docker's bridge routing<br>- Acts like a physical device on the network | - Full L2 network access<br>- Can talk to LAN as a peer<br>- Better for legacy app communication       | - Legacy apps needing real IP<br>- Running DHCP/DNS/VoIP containers   | 🔸 Host can’t talk to container? Expected due to macvlan<br>🔸 Requires specific physical NIC<br>🔸 IP address management is manual                                                                                  |
+
+  
+########################################################################################33
+security:
+| **Do This**                                                          | **Don’t Do This**                                           |
+| -------------------------------------------------------------------- | ----------------------------------------------------------- |
+| ✅ Use non-root user via `USER` in Dockerfile                         | ❌ Run as `root` in containers                               |
+| ✅ Use Docker secrets for passwords                                   | ❌ Set passwords in `ENV` variables                          |
+| ✅ Scan images using `Trivy` or `Grype`                               | ❌ Use outdated images without security scans                |
+| ✅ Drop unused Linux capabilities                                     | ❌ Grant all capabilities by default                         |
+| ✅ Enable seccomp/apparmor for system call control                    | ❌ Run containers without any syscall restriction            |
+| ✅ Protect Docker socket or use minimal-proxy containers              | ❌ Mount full Docker socket directly into containers         |
+| ✅ Pull signed images with DCT enabled                                | ❌ Pull unsigned or unverified images from untrusted sources |
+| ✅ Use minimal, hardened base images (Alpine, Distroless)             | ❌ Use bloated OS images like `ubuntu:latest` unnecessarily  |
+| ✅ Make container filesystem read-only if write access is not needed  | ❌ Let all containers have write access by default           |
+| ✅ Log and monitor container activity with tools like Falco or Sysdig | ❌ Ignore runtime events or container audit logs             |
+
+| **Security Area**        | **What It Helps With**               | **Do This (✅)**                                 | **Avoid This (❌)**                           | **Quick Fix / Troubleshooting**                    |
+| ------------------------ | ------------------------------------ | ----------------------------------------------- | -------------------------------------------- | -------------------------------------------------- |
+| **Dockerfile Hardening** | Prevent misuse of root privileges    | Use `USER`, `alpine` image                      | Don’t use `root` or bloated base images      | App crash? → Check permissions or ownership        |
+| **Secrets Handling**     | Hides sensitive data from images     | Use secrets file or Swarm secrets               | Don’t put secrets in `ENV`                   | Leaked secrets? → Run `docker inspect`             |
+| **Image Scanning**       | Detects known vulnerabilities (CVEs) | Use `trivy`, scan in CI/CD                      | Don’t push unscanned images to prod          | CVE found? → Update base image or patch            |
+| **Drop Capabilities**    | Lowers attack surface                | Use `--cap-drop=ALL`, add minimal needed caps   | Don’t run with all capabilities              | Broken feature? → Check missing caps in logs       |
+| **seccomp**              | Limits harmful syscalls              | Use default/custom profile                      | Don’t run without syscall restrictions       | Blocked syscall? → Check Docker or syslog          |
+| **AppArmor/SELinux**     | Enforces security policies           | Apply trusted profiles (e.g., `docker-default`) | Don’t disable MAC (Mandatory Access Control) | Permission denied? → Audit AppArmor/SELinux logs   |
+| **Docker Socket Access** | Prevents container root access       | Avoid mounting `docker.sock`                    | Don’t mount unless *really* needed           | Mounted socket? → Use `docker-proxy` or read-only  |
+| **Docker Content Trust** | Verifies image integrity             | Set `DOCKER_CONTENT_TRUST=1`                    | Don’t pull unsigned or untrusted images      | Pull failing? → Ensure image is signed with Notary |
+| **Read-Only Filesystem** | Prevents unwanted file writes        | Use `--read-only`, mount volume for logs/data   | Don’t let containers write to full FS        | App crash? → Mount writable volume                 |
+| **Audit Runtime**        | Detects unusual behavior             | Use `Falco`, `Sysdig`, or `Auditd`              | Don’t run without runtime monitoring         | Suspicious activity? → Check audit logs            |
+
+######################################################################333
+| **Topic**           | **What is it?**                                                              | **Why use it?**                                         | **When to use it?**                                                   | **How to troubleshoot?**                                                                                   | **How a Developer Might Ask You**                                                   |
+| ------------------- | ---------------------------------------------------------------------------- | ------------------------------------------------------- | --------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| **Podman**          | A daemonless container engine, compatible with Docker CLI                    | More secure (rootless by default), no daemon to exploit | When security policies restrict Docker daemon usage                   | - Use `podman logs`, `podman ps` <br> - Debug rootless issues with `--log-level=debug`                     | "Can you replace Docker with Podman in a rootless production setup?"                |
+| **Containerd**      | Lightweight container runtime used under Docker                              | Used by Kubernetes; faster and modular                  | When working with Kubernetes CRI directly without full Docker engine  | - Check `containerd` logs: `/var/log/containerd.log` <br> - Use `ctr` CLI for deep debug                   | "Why Kubernetes prefers containerd over Docker in recent versions?"                 |
+| **CRI-O**           | Kubernetes-native container runtime, lightweight and built for CRI           | Focused only on Kubernetes workloads; OpenShift uses it | For OpenShift clusters or strict Kubernetes-native environments       | - Check `crio` logs: `/var/log/crio/crio.log` <br> - Debug with `crictl` tool                              | "How does CRI-O compare with Docker for a Kubernetes-only environment?"             |
+| **Rootless Docker** | Docker running without requiring root privileges                             | Reduces risk of container escape or host compromise     | When developers don’t have root or security wants non-root containers | - Use `docker info --format '{{json .SecurityOptions}}'` <br> - Debug with `dockerd-rootless-setuptool.sh` | "Can you explain how to enable and manage Rootless Docker in a secure environment?" |
+| **BuildKit**        | Next-gen Docker image builder with better performance, caching, and features | Parallel build, remote cache, secrets mgmt              | Complex Dockerfiles or multi-platform builds                          | - Use `DOCKER_BUILDKIT=1` <br> - Debug with `--progress=plain`                                             | "Why do you prefer BuildKit over the classic Docker build system in CI/CD?"         |

@@ -1,0 +1,151 @@
+~~~~~~~~~~~~~~~~~~```what is the DNS and why its importnat~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~``
+domain name system
+its translate the domain name to ip and vice-versa 
+
+DNS (Domain Name System) serves as the internet's phonebook by translating user-friendly domain names into IP addresses, allowing easy access to websites and services. DNS is essential for usability, flexibility, performance, and scalability of internet communication.
+Setting up DNS can vary from changing DNS server settings on end-user devices (Windows, macOS, Android/iOS) to configuring DNS servers and records on domain hosting services or self-hosted DNS servers like BIND or Windows Server DNS roles. This setup enables proper domain resolution and internet service functionality.
+
+Common DNS configuration issues include DNS server unresponsiveness, resolution failures, incorrect DNS records, high latency, and DNS cache problems. Solutions typically involve checking network connectivity, restarting devices and routers, switching to reliable DNS servers, verifying and correcting DNS record settings (A, MX, SPF), flushing DNS cache, and ensuring domain registration is valid. 
+
+DNS records are instructions within DNS servers that map domain names to specific information, such as IP addresses. The A record is one of the most fundamental DNS record types. The "A" stands for "Address," and it maps a domain name directly to an IPv4 address (a numerical IP address like 192.168.0.1) of the server hosting the domain. This allows browsers and devices to find and load a website without needing to memorize the IP address. Multiple A records can exist for one domain to help with load balancing or redundancy. For example, an A record links "example.com" to an IP address so visitors can reach the website through that domain name.
+
+Common DNS record types include:
+
+A record: Maps domain to IPv4 address.
+AAAA record: Maps domain to IPv6 address.
+CNAME record: Maps a domain or subdomain to another domain name (alias).
+MX record: Specifies mail servers for the domain.
+ALB (Application Load Balancer): Not a DNS record itself, but many cloud providers use DNS records to point a domain to an ALB as part of cloud infrastructure.
+~~~~~~~~~~~~~~~~~~~~~~OSI module~~~~~~~~~~~~~~~~~~~~~~~~~~~~``
+there are 7 modules.
+
+ex: explain interview.
+by me::::
+osi module define journey of request from client to server.
+try to access coneect.hdfclife.cmo via http/https.ftp/ssh - laayer 7 (application layer)
+web browser encryption take placet request for https via ssl - layer 6 (encryption layer)
+session created for request may be cache , login, username and password - layer 5 (sessionlayer )
+so 7,6,,5- webserever 
+after TCP indrduce for request - my request converted into packet (message broken into packet) - trnsport layer 
+server ip adress (destination ip where request will reach it will add to pockets ) - thet is network layer layer 3 
+mac address added to pockets - data link layer (layer 2)
+request will reach travers via cable, air, router an reach destination servers - physical layer - layer 1 
+
+layer7,6,5 - web server originate, encryption, session creted for request(cache, cokkie, usename and passowrd cred)
+pockets , added destination, mac address, destination server reached via cable, internet, router - to physical 
+--------------------
+Layer 7 – Application Layer:
+You initiate the request using a web browser (for example, by entering connect.hdfclife.com). At this layer, the browser handles protocols like HTTP, HTTPS, FTP, or SSH.
+
+Layer 6 – Presentation Layer (Encryption Layer):
+If you are using HTTPS, your browser handles the encryption of the data using SSL/TLS at this layer, ensuring your information is securely transmitted.
+
+Layer 5 – Session Layer:
+A session is created to manage your interaction with the web server. This session might handle details such as caching, logged-in status, username, and password management.
+
+Layers 7, 6, and 5 are primarily managed by your web browser and the web server.
+
+Layer 4 – Transport Layer:
+Your request is divided into smaller packets (segments), and a protocol like TCP (Transmission Control Protocol) or UDP is used to ensure reliable delivery between client and server.
+
+Layer 3 – Network Layer:
+The packets are assigned source and destination IP addresses, designating exactly where the request is coming from and where it needs to go—i.e., the server’s IP address.
+
+Layer 2 – Data Link Layer:
+Here, MAC addresses are added to the packets, enabling devices on the same local network (such as switches and routers) to accurately deliver them.
+
+Layer 1 – Physical Layer:
+Finally, the data travels as electrical signals, light, or radio waves across physical media—such as cables, wireless routers, or fiber optics—until it reaches the destination server.
+
+htpps>encrypts>sessioncrete>packets cretes>add destination ip>add mac addres>send dat to server via cale.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Forward proxy and reverse proxy~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~```
+
+forward proxy servers - sits infront of browser 
+Employees in a corporate network using a proxy server to access the internet securely and anonymously
+- 
+
+reverse proxy server sits inforny of server not browser.
+ex: tcs block chatgpt, via nginx reverse proxy we are calling the upstraem bloack vai nginx from revrse proxy (becuase teh backend application is secure not directly access from the browser. request forest web>app>db and cloase.
+sits in front of one or more backend servers, intercepting incoming requests from clients on the internet, forwarding to backend servers, and returning responses.
+
+~~~~~~~~~~~which edge service yu are using ~~~~~~~~~~~~~~~~~~~~~~~~~~
+When you request a website that uses Akamai, your request is often routed first to Akamai's servers (edge servers) rather than directly to the webserver hosting the site. These Akamai edge servers cache content closer to you geographically and deliver it efficiently. This setup reduces latency, speeds up website load times, and reduces the load on the origin webserver by serving cached content.
+So, during your request, the DNS may direct you to an Akamai edge server first, which then retrieves content from the origin server if not cached, acting as an intermediary to improve speed and security.
+note:
+Akamai acts as a reverse proxy and CDN, not a forward proxy, and is used to accelerate content delivery, improve reliability, and enhance security by caching and filtering traffic between users and the webserver.
+soluation: purging required from cloudfair and akmai end earlier we are using the cloudfair later moved to akamai.
+
+post movembet: cache issue, rewrite logs printing more, space issue, 502 gateway- application slow down.
+
+~~~~~~~~~~~~~~~~~~~~~~~`user reports slowness isuue~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~``
+1. check all user or particular user, internet/wify,network issue, network latency
+2. i will check the network latency - by ping, traceroutr then will inform th akmai edge service (network latency is not issue)
+3. check load on any bandwidth like nload
+4. check access log, error log (max client reached), sysylog, backend upstram lof, database log (delay responce from db - long running query, modify indexes)
+5. netstat - chek the to many open connection later close the connection which one is not use 
+2. run the top , htop (check load avarage, process conuming cpu and memory  (more resource)
+         depriorties or kill the process
+    - in kuberenets 
+3, obeserve in te appd and grafna visulation 
+ 
+
+~~~~~~~~~~~~~~~~~~~~~curl work with ip failes with domain~~~~~~~~~~~~~~~~~~~~~~~~````
+curl usually sending the request and getting responce from server via GET, POST method 
+curl ip- ok
+curl https://onlineinsurnce.com - its not working
+1. only failes with one machine issue with the DNS resoulation issue.
+DNS configuration setting need to check - via ping -c 4 https://onlineinsurce.com, check the dns recored like A column for ipv4 addess, AAAA for ipv6, CNAME records for domain name to domain name mapping. 
+dns zones- we can find over there which ip assoatied ted with the which docmain.
+nslookup domain >will get alb>serch in the aws >we will get webservers >nginx menas over there proxy will get application server.
+2. dns translator via dns zones but missconfiguration, DNS server not able tnslate domain name to ip.
+dns entry: /etc/resolve.conf (entry - nameserver 8.8.8.8) nameserver is localhost you can set the 8.8.8.8 dns resolve issue will solve. once it resolve change it back to original.
+/etc/host : local dns system
+
+
+~~~~~~~~~~~~~~~~~~~~~~website return 502 code what is the issue~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~````
+1.userbane and oassword : AD is down (LDAP) server is down - so that autheticatation not done so 50 bad gateway 
+ok AD is up reqyest sebd to wenb abd alb alb distrivute load to backend(application-business logib running over ther)- if backend is down , or it took more time 2. to responfd 502 will show.
+ok application server fine ,but issue with db leve(long running queries, db is down , connection not happeninf- db accpout is locked , db servers is not in good helkt its there in critical - so kll long running , ltaer do proper indexing.- db is down or taking more time to reond .
+how: aplication check the suysout log, process check, load avarage, any hung thereds formed, take thred dump and kikk and restart the servers.
+db : kill long running query, modify the creation of indexing the so that it will featcg the data based on indexing need to do on table (craete index command)
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~what is the difference betwwen teh 0.0.0.0 and 127.0.0.1~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+127.0.0.1 - loopback address allow to only machine to talk itself (one node cluster -cluserter ip serive in teh kuberenets ) not node ip or load balncer 
+all ipv4 address on local machine, application listen from the all ip from external.
+
+explain:
+i ghave one ec2 inside the one python application isthere ok, curl is working insid ethe ec2 but public ip:port i snot working menas i am not able to access the application becuase the aplication binded with the loop back address
+python3 -m http.server --bind 127.0.0.1:8080 if we set or biind like 0.0.0.0.0 8080 we can access from the external (like public ip:port ) 
+
+~~~~~~~~~~~~~~~~~~```public subnet and private subnet~~~~~~~~~~~~~~~~~~~~~~~~``
+publicaly accessbale , privatly accessbale 
+IG attch to public subnet 
+create nat gatawy in public subnet and attch taht NAT tp private so we can access vai bastin host (private ip we can access from bastin host)
+public subnet: all web server are there - route to interet through interbet gateway - frontend like webservers keeping 
+private subnet - not directly accesbale from internet via NAT gateway you can connect -
+
+
+~~~~~~~~~~~~~~~~~~~``you craeted private subnet insyed of public subnet ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~``
+good thing- subnet created 
+route the traffic to IGW ( craete internet gateway and route to IGW)
+
+
+
+
+how you are creating domain and where we are adding? for my project ?
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

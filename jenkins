@@ -1,0 +1,136 @@
+1. master and salve setup
+2. craeted users and roes for developers
+3, craeted some jar jobs like myaccount and pcsps 
+4. some issue (svn password expire, post movemebt server password expires, compliation error, restart the jenkins via (ui and CLI)
+5. craete one disk space job and alerrt will send to email notification 
+6.caete war deploymnet via ANT, mvn 
+7. jenkins private ip - we are mentioning in jenkins , jenkins public ip movingg to destination authorization
+8. check all steps manually how to build manualllay  
+9. checkout svn we are passing the ba id and password is there any way to do password less authetiaction
+
+
+see teh some jobs like pipeline issue 
+
+ ###########################what i sthe jenkins shared libarray and how they work ######################################
+we have multiple developemnet teams 
+- all teams required pipeline. some of the  satage is remains same liek build , deploying  steps, so we are using the  jenkins shared library for that.
+- craete githiub>placed the jenkins shared library - if new requirement we will check that jenkins shared library we can use that(invoke shared library) else create pipeline in tjhe jenkinsfile from scratch
+- by using this time will save
+
+#####################top 5 build target taht you use with maven frequently#############################################333
+maven - build language 
+gradle, ANT
+- 
+MAVEN----------5 commads 
+1. mvn clean - it will clean the /target folder (previous build like jar, war, artifactory)
+2. mvn compile - developer wriet java code>compile teh sorce code (src/main/java)
+3. mvn test - test the sorce code - src/test/java
+4. mvn package - pacahe the code (it will craete the jar or war file )
+5. mvn install - install or place the build artifactory (like target folder and jar )into one extertranl repository or move the respective remote server. (artifactiry repository )
+              - by default the all things stored in the ~/.m2 folder thsi is the default folder alll crated target and artifactory stored in m32 folder only. 
+
+###############which artifactory repositiry do you use for builds################################################3
+in my earler project i am using teh nexus as artifact repository,>we are created the jar,war,ear >we are keeping alll those in teh nexus repo>that we mention in the pom.xml (credntial and which palec store)
+>developer go that theat plavce and download as per theier requiremnet.
+1. how the teh artifactory repo configuration in pom.xml ?
+2, why nexus yo use why not jfrog?
+3. how tos etup teh nexus repo and how the place in mvn file. and how developer cn aaccess teh artifactr repo.
+
+#######################how you cofnigure artifactory for maven application##############################333
+in maven one setting.xml is there> you can craete repo profile within that configure repository and repository location.
+- if you are using the multiple repo (url/repositoty path) or specific job you need to mention the repository path different then - insde po.xml <under distruvutaionmanagemnet add the repo id an durl>
+
+################################build passed localy not in CI###########################################
+all steps:
+1. what exctly like build language depend
+approach :
+~ logs - i wi;; check teh first build log >if any error ok >else i will cgo forward
+~ Dependency cache - in local without mvn cleans it mighht work but in jenkins its cache issue >i will add mvn clean sthen mvn install
+~ env - in local enviornmnetal variable are there but via jenkins we are buildiing s jennkins agent didint read that variable so that i sissue 
+    Q! - gie me ne exmaple
+~ file permisstion - jenkinsagent has no file permisstion for executing so that is also issue i will check and gibe the permisstion and trigger the job
+Q1 - tell me one example
+~ compre with some OS, linux distrubution- from local server ip and jenkins server ip 
+Q1- gibe me one exmaple what you faced 1 issue and how you fixed.
+
+#################################CI pipeline Successed but application broken in prod#########################################
+1. issue with traffic,
+2.deployment strategy (canery deploymnet 10 % users access the new version of custmers(internal ) -will keep the 2 days gradutually increased to 50%,eventually  100%
+3. something can be taken care by the build steps i cahcek stage and prod (compare different build flags)
+1. base
+d on the traffic (application broken>check logs>describe pod>crashloopback why?- because of failur fuction, OOMM killed- due to traffic
+i request tester to perform the load testing on QA enviormnen.
+2. compare teh stage and prpod (instance typr, 5 node cluster, where as stage 3 node cluster)
+
+##############################pipeline slow down over a time(buuild takes more time)#########################################################
+pipline job taking more time to execute.
+approach:
+1. parrallsim:only one agent or 4 ci cd pilinne run (concurrency )
+2. build cache: for evey build sam emenas 10 build 11 build - you can take the cache layer from the old build so that we can reduce time.
+memory issue- verticle scaling-increse swap
+
+########################devloper pushes feature branch but pipeline doent trigger###############################3333
+1. what- i will check CI file 
+githubaction yaml file- withing githubfuuction yaml file (in on filed what brach is tere under push if amin chage it to feture branch name , if pull not there confifure )
+- on:push:branched:- * : * feture (exclude the branch like *deturebranch )
+
+######################################################3
+email notofiaction - pluggin
+configure>>job>postbuild action>trgger as failure - freestyle project
+declarative: post section and define failure configuration (fail,sub,descr,recipts
+
+---jekins change prt? how?
+
+###########
+jenkins installtion
+jenkins need to add the https configuration how?
+3 ways: war, docker, linux os distrubution (based on os)
+wget https://get.jenkins.io/war-stable/2.426.1/jenkins.war   (Platform-Independent (.war File))
+- java -jar jenkins.war --httpPort=8090
+- nohup java -jar jenkins.war --httpPort=8090 > jenkins.log 2>&1 &                    (to run jenkins in background) ip:8090 jenkisn ui)
+ps -ef | grep jenkins.war
+
+
+
+####################Q!) master jenkins servr what is teh CPU and memory ?
+When configuring a slave/agent node in Jenkins, you specify the "Remote root directory"—the path on your remote agent where Jenkins will store job workspaces and data.
+remote directory>no of executor is 4>labels>usage(perment agent)>systemcredintain(masterip and private key)>lunch method via ssh (ssh-keygen -t rsa) the move jenkins publec to slave authorozation file.
+availability-keepthisagent onlineas much as possible>in slave only java installtion and ant give.
+BUILD_XML : isthe importnt copy from one node to another 
+pluggins>under te jenkins home : copy from from old to new jenkisn
+system configuration:- home directory
+tools configuration:
+credntial and security configuration
+config.xml under jobs its very importnt 
+#####################################
+which is better bashrc is lowest priority?highest is tools section mentoned things and teh globla tool configuration
+| Source                | Priority | Who Sets It           | Used When                                       | Best For                                      |
+|-----------------------|----------|------------------------|--------------------------------------------------|------------------------------------------------|
+| .bashrc               | ❌ Lowest | System/User            | If no tools block used, Jenkins uses system env | Quick setup, not scalable, not Jenkins-managed |
+| Global Tool Config    | ✅ Medium | Jenkins Admin          | Source for the tools block                      | Centralized tool path control                 |
+| tools {} in Pipeline  | ✅✅ Highest | Jenkinsfile (DevOps) | Explicitly overrides all tool paths             | Best for portability and team pipelines       |
+
+---Jenkins Global Tool Configuration is global, not per-agent.
+
+You can't define tools directly per-agent in Jenkins, but:
+💡 You can create multiple named tool entries in Global Tool Configuration and install tools accordingly on agents.
+
+###########################manage users and roles
+role-based access control (RBAC) in Jenkins,
+pluggin: Role-based Authorization Strategy
+then : Manage Jenkins → Configure Global Security >authhorization>Role-Based Strategy
+
+Manage Roles – Define new roles and permissions
+Assign Roles – Assign roles to users
+
+#################pipeline slow
+- static cide anlyses (line by line) - only chage file nly scan by using teh git diff 
+2. full static build (every night pipeline in night to ensure code in the main branch is teh stable)- full static code analysis 
+indenpendent worked in day tiem (nightly build triggered by teh devops(main branch fully updated and stable)
+
+###########static code anyalses
+we fond the - synatx error, credintainal anywere hardcode, unused vaiable and unused function, type missmatch 
+
+ 
+
+

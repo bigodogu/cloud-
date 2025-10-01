@@ -1,0 +1,116 @@
+~~~~~~~~~~~~~~~~~~~~~~~Example of How to Explain Your Daily DevOps Routine~~~~~~~~~~~~~~~~~~~~`````
+
+daiy stadup meeting (agile): what we did , what we are doing>head to jira priotories the task and tale the task , make it on work>deploymnet overvview call>finaly EOD update the work os task status of tin teh jirs .
+in product backlog all come and store >manager/team lead assign to devops engineer 
+Morning Stand-up (Agile Ceremony):
+“Each morning, I participate in our Agile daily stand-up meetings, where we quickly align on project status, discuss blockers, and synchronize priorities with the team.”
+
+Task Tracking in Jira: head to jira will see 
+“I regularly update my progress in Jira, where all our tasks, stories, and bugs are tracked. After the stand-up, I check my Jira board, review the day’s priorities, and pick up tickets assigned to me. I make sure to move tickets to the correct status as I make progress.”
+
+Infrastructure Work with Terraform:
+“My technical tasks often include writing or updating Terraform code to provision and manage infrastructure as code. I ensure my changes are versioned in Git, reviewed through pull requests, and tested before merging.”
+
+Afternoon Check-ins or Meetings: deployment day (deploymnet overview call) - will connect with all leads , developer and manger over there we line items , copmonets overvew callall.
+“In the afternoon, we might have additional team meetings for sprint planning or retrospectives, or I join discussions to troubleshoot incidents or collaborate on complex deployments.”
+Continuous Jira Updates:
+
+EOD:
+“I keep Jira updated throughout the day—commenting on tickets, moving them to ‘In Progress’, ‘Ready for Review’, or ‘Done’ as needed, so the team always has an accurate status.”
+
+task like : docker setup, master and slace setup, job ceation, was fix pack, ansible script for connect all server ans stopand start servers.
+year end activities, craete sanity board for ye activity, 
+
+“My daily workflow starts with an Agile stand-up to set priorities. I use Jira to track all tasks and collaborate with the team, update infrastructure using Terraform, and participate in regular meetings to ensure alignment. I keep our Jira tracker up to date, providing visibility and ensuring smooth progress.”
+
+
+~~~~~~~~~~~~~~~~~~SDLC stes~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~```
+requirement analysis - take teh docs and requirement 
+planning - men, resource, propertibale
+desining- low level desining, high level desining 
+devopment(build stage)- based on code develop the code as per BRD
+testing- QA yest the code as per test cases (give signoff who ? stake hodler willl give sinoff for uat test) so we are moving teh signoff componets only to prod development.
+deployemnet - deplyment code to production serevrs (like jenkins, manually, via ansibe, via shwll script)
+monitoring - appd and grfana we are using the monitor the application and serevrs helth. 
+if ant alert will trigger >go to overview>based on priority >rise incidence in service now>and make it in the excel trcaker and follow up and close the sztTuz of incident.
+
+
+~~~~~~~~~~~~~~~~~~~~tell us about your devops expirence~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
+based on job descrption olnly you can tell.
+i worked on ci/cd 
+our application deployed on aws 
+sre is not there - so obervaily and monitor application
+containeraztion application and build and montior te containers.
+i created the 
+troubleshoot teh production issue 
+
+~~~~~~~~~~~~~~~~what is your contribution~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~``
+1. primarly focus on the design - docker k8s, aws, ansible.
+2.. documention craeting SOP 
+giving teh kt to junior (train te junior and bring them to speed.)
+connect with managenment and stacke holder 
+
+we have multipled evelopment team for docker i am point of contact 
+- one of teh docker related development team s
+
+~~~~~~~~~~~~~~~~~tell us about the project~~~~~~~~~~~~~~~~
+this is how i would answer the quation?
+- i am working as devops for insurance 
+- for this project we are adding teh microserveices.
+- i worken on terrfaorm, ansible, aws because our appliccation is deployed on AWS
+send mail>service requesr(sa) rised SLA is 48 hour>CR (change request created)- cab (central advisior board) meeting approved- make the changes the in aws level.
+- i worked as team lead - i take requirement from the developer and shared between the juniors and guide them educated them . 
+using the terfform we create the EKS
+
+~~~~~~~~~~~~~~~~~~``how the flow~~~~~~~~~~~~~~~~~~~~~~~~~~
+When you drop an email or open a support case with AWS Cloud Support, the process typically flows as follows:
+
+Support Case (SR) Creation
+You raise a Service Request (SR) or support case describing your issue or request. This SR is logged in their system with a unique case number. You may select the severity or priority level (e.g., a 4 or 9 severity level usually corresponds to certain SLA response times such as 8 hours for medium severity).
+
+SLA and Routing
+The case is routed based on the severity level and the support plan you have. AWS support adheres to SLAs (e.g., response times vary based on severity: from 15 minutes for critical issues to up to 24 hours for low). The SLA clock starts ticking once the case is created.
+
+Change Request (CR) Raised
+If your issue requires a change in AWS resources, services, or configurations that cannot be done immediately or automatically, a Change Request (CR) may be raised internally or collaboratively as part of the resolution process. A CR represents a formal request to change infrastructure or service configuration.
+
+CAB Meeting
+A Change Advisory Board (CAB) meeting is a formal meeting where stakeholders review and approve or reject proposed change requests.
+
+The CAB usually includes representatives from support teams, service owners, security, compliance, and sometimes customer representatives if applicable.
+
+They discuss the impact, risk, timing, rollback plans, and necessary approvals for the change.
+
+If approved, the change is scheduled and implemented according to the plan. If rejected, the CR is sent back for revision or canceled.
+
+Approval and Implementation
+Once the CAB approves the CR, AWS support (or your internal team if applicable) proceeds with the implementation of the change to resolve the issue or fulfill the request. You remain updated via the SR/ticket until resolution.
+
+Difference between SR and CR:
+Term	Meaning	Purpose
+SR (Service Request)	A support ticket or case you raise to report an issue or request help	Tracks and manages your support interaction with AWS
+CR (Change Request)	A formal request to modify infrastructure, services, or configuration	Used internally or jointly to plan, review, and approve changes
+In essence, SR is the overall support case you raise (your ticket), while CR is a subset or follow-up related to specific changes that need governance controls (via CAB) before being applied to resolve the SR.
+
+You can think of it as:
+
+You raise an SR to report a problem.
+
+If fixing it requires a service/system change, a CR is raised.
+
+The CAB meeting ensures controlled, risk-assessed approval before proceeding.
+
+This flow and terminology are standard in ITIL-based support and change management processes used by AWS support and many organizations.
+
+References:
+
+AWS Support case handling, severity, and process flow details.
+
+Common ITIL definitions of SR (Service Request) and CR (Change Request).
+
+Related
+How does AWS support SLA timing relate to support case escalation process
+What is the typical workflow from support email to case resolution in AWS
+Who participates in CAB meetings and what decisions are made about support cases
+How are SRs and CRs different in urgency, scope, and approval process
+How do AWS support case timelines compare to the SLAs for SRs and CRs

@@ -1,0 +1,314 @@
+-----------------KUERENETS ARCHETECTURE-----------------------------
+#### 📌 1. **API Server**
+
+* It's the front door to the cluster.
+* Handles REST calls (`kubectl`, client apps).
+* Talks to:
+
+  * etcd (for storage)
+  * Scheduler (for scheduling decisions)
+  * Controller Manager (for maintaining state)
+  * Kubelets (on worker nodes)
+
+---
+
+#### 📌 2. **Scheduler**
+
+* Gets **unscheduled pods** from API Server.
+* Picks a **best-fit node** based on:
+
+  * Resource availability (CPU/memory)
+  * Node affinity/anti-affinity
+  * Taints & tolerations
+  * Pod priority
+  * Constraints (e.g., zones, labels)
+* Tells API Server: “Schedule this pod on Node-3”
+
+> 🧠 **Scheduler does *not* start containers. It just decides where the pod should go.**
+
+---
+
+#### 📌 3. **API Server (Again)**
+
+* Updates the Pod object with assigned node info.
+* Communicates this to the **Kubelet on that node**.
+
+---
+
+#### 📌 4. **Kubelet (on worker node)**
+
+* Watches API Server for pods scheduled to it.
+* Talks to:
+
+  * **Container runtime (like containerd/Docker)** to run the pod.
+  * **kube-proxy** to update networking rules.
+
+---
+
+#### 📌 5. **Container Runtime**
+
+* Starts the actual containers inside the Pod.
+
+---
+
+#### 📌 6. **kube-proxy (on worker node)**
+
+* Manages iptables or IPVS rules.
+* Forwards traffic to pods using:
+
+  * ClusterIP services
+  * NodePort
+  * LoadBalancer
+* Helps in **Service discovery and routing**.
+
+---
+
+#### 📌 7. **etcd**
+
+* The key-value store of the cluster.
+* Stores:
+
+  * Configurations
+  * Pod specs
+  * Secrets
+  * Service info
+  * State of the entire cluster
+* Data Format: **JSON**, internally stored in protobuf (efficient binary format).
+
+---
+
+#### 📌 8. **Controller Manager**
+
+* Monitors desired vs actual state using control loops.
+* Examples:
+
+  * Deployment Controller
+  * Node Controller
+  * ReplicaSet Controller
+* Ensures the cluster always matches the desired config.
+
+> 📢 It's mandatory for maintaining state & healing.
+
+---
+
+### ✅ EKS (Amazon Kubernetes Service)
+
+In **EKS**, the **Control Plane is fully managed by AWS**:
+
+* You don’t manage API Server, etcd, Controller Manager, Scheduler.
+* AWS scales and manages high availability, upgrades, backups.
+
+You only manage:
+
+* **Worker nodes (EC2)** or **Fargate pods**
+* **kubectl**
+* **IAM roles, networking, security, and manifests**
+
+
+### ✅ Summary Table
+
+| Component          | Role                                | Who Runs It    |
+| ------------------ | ----------------------------------- | -------------- |
+| API Server         | Entry point, handles requests       | Master         |
+| Scheduler          | Chooses node for Pod                | Master         |
+| etcd               | Stores all state                    | Master         |
+| Controller Manager | Reconciles desired vs current state | Master         |
+| Kubelet            | Runs on node, starts containers     | Worker Node    |
+| Container Runtime  | Pulls image, runs containers        | Worker Node    |
+| kube-proxy         | Sets up network rules for services  | Worker Node    |
+| EKS Control Plane  | Fully managed (you don’t control)   | Managed by AWS |
+ 
+-------------------------------what i steh service and how it will be -----------------------------------------------------------------
+
+Let's break your questions down one by one and answer with clear Kubernetes real-time DevOps understanding, including where YAML definitions are placed and why companies make certain choices.
+
+---
+
+### 🔶 **1. What is the purpose of a Service in Kubernetes? Is it mandatory?**
+
+**Purpose:**
+
+* A **Kubernetes Service** provides a **stable network identity (IP + DNS name)** to access a set of Pods.
+* Since Pods are ephemeral (they can restart anytime with a different IP), Services abstract the underlying dynamic Pod IPs and give a **single access point** to them.
+
+**Is it mandatory?**
+
+* Yes, **in real-world applications**, Services are **mandatory** to expose and access your applications:
+
+  * Internal: app-to-app communication (e.g., frontend → backend)
+  * External: users accessing apps from outside (via LoadBalancer or Ingress)
+
+---
+
+### 🔶 **2. On what basis do we learn or choose Services? What are the types?**
+
+**Basis to learn/choose:**
+
+* Based on **where the consumer lives** (inside cluster vs outside)
+* Based on **network exposure need** (internal-only or public-facing)
+* Based on **cloud provider support** (e.g., LoadBalancer needs cloud support)
+
+**Types of Services:**
+
+| Service Type   | Use Case                                      | Exposes To                    |
+| -------------- | --------------------------------------------- | ----------------------------- |
+| `ClusterIP`    | Default. Used for internal communication      | Inside the cluster only       |
+| `NodePort`     | Exposes service on a static port of each node | Outside (via `<NodeIP>:Port`) |
+| `LoadBalancer` | Creates a cloud provider Load Balancer        | Outside via LB IP             |
+| `ExternalName` | Maps a service to an external DNS name        | External services (e.g., DBs) |
+
+---
+
+### 🔶 **3. What is `ClusterIP` and where/when can we use it?**
+
+**Where/When:**
+
+* Use `ClusterIP` when **one Pod wants to talk to another** within the cluster.
+* Example: Frontend → Backend, or microservices talking inside the cluster.
+
+**Where to define it:**
+
+```yaml
+# In service.yaml
+spec:
+  type: ClusterIP
+```
+
+**Common for:**
+
+* Internal microservice communication
+* Backend APIs, Databases
+
+---
+
+### 🔶 **4. What is NodePort and LoadBalancer Service? Which is better?**
+
+| Type         | Description                                                                 | Use Case                               | Drawbacks                                        |
+| ------------ | --------------------------------------------------------------------------- | -------------------------------------- | ------------------------------------------------ |
+| NodePort     | Exposes service on a fixed port on each node’s IP                           | Simple cluster, testing, on-prem setup | Manual DNS setup, security risk, no auto-scaling |
+| LoadBalancer | Provisions a public LoadBalancer via Cloud Provider (AWS, Azure, GCP, etc.) | Real production workloads on cloud     | Cost, dependent on cloud provider support        |
+
+**Which is better?**
+
+* ✅ **LoadBalancer** is preferred for production **cloud** deployments:
+
+  * Auto DNS, managed IPs, cloud-native scaling, secure
+
+---
+
+### 🔶 **5. Why not use NodePort in place of LoadBalancer? Disadvantages of NodePort**
+
+**Disadvantages of NodePort:**
+
+* Exposes **every node**, so it's less secure.
+* You need to manage **external DNS** or Load Balancer yourself.
+* **Port collision** may occur (e.g., only ports 30000–32767 allowed).
+* No **health-check integration**, no **auto-scaling** or **smart routing**.
+
+**So in real-world cloud setups**, LoadBalancer is preferred due to:
+
+* **Managed** and **scalable** public access
+* Built-in health checks, SSL support via Ingress
+
+---
+
+### 🔶 **6. Why some companies stick to NodePort and ClusterIP only?**
+
+**Common Reasons:**
+
+* They're **on-premises**, not on cloud → no support for cloud LoadBalancers.
+* They have **external reverse proxies** (e.g., NGINX, HAProxy) managing routing.
+* They want **tighter control** over network exposure for security.
+
+**Example Setup:**
+
+* Internal: ClusterIP for services
+* External: NodePort + NGINX ingress controller on bare-metal
+
+---
+
+### 🔶 **7. Where to define `labels` and `selectors` for Service Discovery?**
+
+Service and Deployment must be connected using **labels and selectors**.
+
+#### 🟩 In Deployment YAML (e.g., `deployment.yaml`):
+
+```yaml
+metadata:
+  name: myapp
+  labels:
+    app: myapp               # ← Define label here
+
+spec:
+  template:
+    metadata:
+      labels:
+        app: myapp           # ← Pod will have this label
+```
+
+#### 🟦 In Service YAML (e.g., `service.yaml`):
+
+```yaml
+spec:
+  selector:
+    app: myapp               # ← Selector matches the Pod's label
+```
+
+> 🔑 **Selector in service should match label in pod template** (inside Deployment). This links the service to those Pods.
+
+---
+
+### 🔄 Real-Time Flow Example:
+
+1. **Deployment.yaml**
+
+   * Creates Pods with label: `app: backend`
+
+2. **Service.yaml**
+
+   * `selector: app: backend` → targets those Pods
+
+3. **Type: ClusterIP or LoadBalancer**
+
+   * ClusterIP used internally
+   * LoadBalancer exposed to the internet
+
+---
+
+### ✅ Summary Table:
+
+| Aspect              | ClusterIP           | NodePort               | LoadBalancer       |
+| ------------------- | ------------------- | ---------------------- | ------------------ |
+| Access Scope        | Internal only       | External via NodeIP    | External via LB IP |
+| Use in Prod         | Yes (internal apps) | Rare (on-prem or test) | Yes (cloud)        |
+| YAML `type`         | `ClusterIP`         | `NodePort`             | `LoadBalancer`     |
+| Need Selector?      | ✅ Yes               | ✅ Yes                  | ✅ Yes              |
+| DNS/Port Management | K8s handles         | Manual                 | Cloud handles      |
+
+---
+
+If you want, I can give a sample `deployment.yaml` and `service.yaml` for all 3 service types side-by-side with comments for each. Let me know.
+
+############################developer mention the pod ip in teh pod b property via hardcode pod ip is mentioned is te goood practc#######################################################3
+no - pod are emphermaerla in nature , it migh change the ip everytime when the restart/crashllopback/wendown and coomeback >so 502 badgateway will come >again specify ip >else use service via labels and selector algorthic communication will happe.
+deploymnet L labels (under template-template hashcode , service.yaml - selector name should be same )
+so when it comeback comminucation over label and selector not via ip.
+pod 1 frontend and podb is backend .
+
+
+######################what are types of kuberenets #######################################################3
+type of services - based on scope how the servicice is accessble (scope of access)
+cluster ip - only withing k8s cliuster -  
+node port - kuberente access via useing the node port and port 
+load balnacer - enable public access to externally, anyone can acces, this type only works on kuberente cluster (not minikube, kind)
+external name - when we define external name , external access through DNS name.
+headless service - cluster ip to none headless service will create , it will use in statefullset(like database)
+
+##################label and selector###########################3
+label is a key and value pair, we need to add under metadata of deploymnet/pod object 
+selectore - to identfy the pod using te label - use the service and replicaset object 
+#################################service##########################33
+cliustr -a cces inside cluster
+nodeport- whoever access within vpc , via node ipand port, headache to remenber the ip, no HA, no defualt autoscaling, SSLand TLS configuration default
+loadbalncer- outside userd like our online inurnace   (only have achive in luberenet cluster which have cloud control manager enabled or controller manager running on the controla node .
+

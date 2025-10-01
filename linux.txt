@@ -1,0 +1,155 @@
+
+
+~~~~~~~~~~~~what are the commands you ae using the daily basis in the linux~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
+Disk Space Troubleshooting:
+df -h
+du -sh *, ls , ls -h , ls --help , ls -lrt,cd 
+
+find / -type -f/d <filename/pattern>
+locate arun.txt
+  - yum instll mloacte and updatedb.
+
+
+
+ Process and Performance Monitoring:
+ps -aux | grep java
+ps -aux | grep java
+kill -9 <process>, -3 thred dump
+load avarage :
+top -H
+sar -u 1 5 (every 1 second 5 times) u-cpu, r-mem, d-input and output 
+free -h, df -h, vmstat
+uptime -load avarger 1min, 5min,15 min
+who - who are loggin, w- who are loggin and what they are doinng. wall message, watch ls, top -H (ctr+u, +r +k +n)
+
+Viewing and Editing Files:
+cat <file name>, less <file name>- you can serch string also by /or ? (n anf N forward and backward), more give spacebar button page by page where as less you can serch string it will open the entire thing so give q for exit.
+tail -300f <log.txt>, head -300f, 
+head -m 5 , tail -n 5, rm -rf *, rm <file name>
+
+Permissions and User Management:
+chmod -R 777 <filename>    4+2+1  (ugoa-user,group,other,all)  u=rwx, a-x.
+chown app_user.app_user hybrid_runner.tar
+usermod -aG docker app_user and newgrp docker or logout and log in 
+shell script file should be executable : chmod +x <*.sh>
+useradd <username>, userdel <username>, by defauly /bin/bash , useradd -s /usr.sbin/nologin so no inteactive terminal , passwd app_user,chage -l ,chage -M -1 app_user(password no expires), chage -l E "yyyy-mm-dd" app_user for expir.
+
+
+alias and crontab:
+vi ~/.bashrc and ls='ls -lrt', source ~/.bashrc
+if you open the terminal what were there in bashrc those are will excuted.
+
+
+crontab -l and crontab -e (add * * * * * <abosulate path/startserver.sh> or @reboot 230 <absoluatepath>, min/hour/dayofmonth,month,datofweek
+
+file transfer:
+scp -r <filename> app_user@<ip>:<destinationpath>
+if more size use rsynch insted of scp.
+for local use cp <source destination> and mv <old> <new> for rename 
+
+we are using teh some some systemctl process:
+systemctl status/start/stop <service_name>
+ps -ef ppid,--sort=%cpu, %mem
+
+Search pattern  :
+grep "string" filename , grep -rL filename , zgrep for .gz files, egrep or grep -iEc "string1|string2" <filename>
+
+ssh-keygen -t rsa >id_rsa.pub id_rsa , vi autprization add pub key, ssh-copygen app_user@172.27.72.16
+tar -cvzf arun.tar .
+tar -xzf arun.tar
+flush, delete , create zip file, var/lib/docker/container, truncate -s 0 sss.log
+tail -c 2G arun.log (take 2gb lofs from file)
+
+~~~~~~~~~~~~~~~~```can you restore lost pem chain:how ypu can acess the instance~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
+
+during craetion instamce-.pem file(private key for connect ec2 instane)
+ppk ok for putty.mobaxterm client connection so convert pem to ppk -load private key>give name>download and add that key in the paygen so no need to give every time of login.
+- i dleted pem file accidently ?
+can i restore?
+throuhpassword or private key:
+ ssh -i <pem file place> username@password  where as passwordauthentication disabled so it will ask the pem file.
+how?
+aws:i will connect ec2 instamce by  session manger and ec2 instance connect  (connect- ec2 instamce instance connect mostly enabled - cloud terminal -
+using ssh-keygen generate public and private key (place the public key in the authorize key and download private key permision 400 so use this private key connect cloud instance.
+
+~~~~~~~~~~~~~~~~/var filled 100%~~~~~~~~~~~~~~~~~~~~~~~~````
+all sevrice write logs inside var log
+- nginx, tomcat, httpd - services 
+logs s3 movment 
+remove cache clear cachef from package manager end: apt clean (it will remove cache), remove old bkp. 
+find the command mtime +20 , msixe +200M , exec ls {}, exec rm {}
+remove the tmp folder.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~linux vm is slow due to high CPU utilization~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
+Check which  process taking more cpu (top -H) ctr +u - real time utilizating
+- kill the process , ask cloud team to check, ask third part to check, asillogcollector so instlled audit.id service so it reduced.
+top by default , htop
+fetch the process id (increase and decrease priority nice or renice based on the impornatce (-19 high, 20 low) nice 17 <process id>
+- i will send developer and ask development to check becuase last night we deployed the code. (any infinate loop)
+- due to zabix agent instance going down 2/3 checks.
+kill and move - production server. 
+
+lscpu, uptime. (load avarge showld be down in the lscpu core )
+- top -H one process uusing the 135% so its using all cpu core not only 1 cpu core 
+
+~~~~~~~~~~~~~~~~~~~~~~application deployed nginx, connection refused comming~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~``
+unable to connect : nginx is down 
+
+check : systemctl status nginx and start 
+./nginx -s stop , start , ./nginx -t
+2. will check the SG, NACL, any blocking request, ALB log will check.
+i will check telnet, ping, connect with network time , make SElinux as setinforece and getinforce 
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~SSH to Instances faile~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~```
+1. he is using righ username/ password?
+password expires?
+- ip address and check? user is using the correct pem file? permisstion for the pem file (400) if 777/700 we will not open.? 
+- any firewall issue check fireall- sudo ufw status ifactive chage to inactive
+- check SG for instance is it open 22 inbond traffic for instamce? 22 tcs ssh ? NACL is also check?
+- is there ssh process is stopped ? connect ec2 connect - sudo systemctl status sshd (if inactive ssh will not happen)
+
+putty - blank screen after entering the username/password
+instmace went down with 2/3 check due to memory 
+
+if no disk space avialble on device:
+crontab will not work 
+we are not able to chage directory 
+
+js heap out memory :
+- incrsing the intial and final heap size xms and xmx based on memory (ask horizentall scaling also)
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~find list logs older tah 7 days in /var/log~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~``
+find <directory>
+find . or /var/log type -f/d -name *.log  -mtime +7 - list files
+find intergrated with exec : exec command perform on the output of the filnd command like ls , rm 
+- find . -type f -name *./log -mtime +7 -exec ls -lrt{} \;
+-exec rm -rf, -exec mv {}, -exec gzip{} for zip file  - i want to grep the all old 7 days and zip the file . 
+
+find is very important files:
+msize +200M
+find . -type f -name *./log -mtime +7   
+o/p : except 7 file exec work on top of this output like list with username who is the owner group, permisttion thinsg, tiestamp.
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~Log rotation~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~SCRIPT
+logs writing the /var/logs/myapp/
+compress llogs older than 7 days:
+find /var/logs/myapp/ -type f -name *.log -exec gzip {} \; - compress the logs older than 7
+-msize +30 -exec rm -rf {} \;                             - remove older than  30 days 
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

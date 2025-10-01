@@ -1,0 +1,111 @@
+~~~~~~~~~~~~~~~~~~`what is the difference betwwen the metrics , logs and trace give me one examople with payment service?~~~~~~~~~~~~~~~~~~~``
+
+
+metrics: what is cpu, mem, error time, https request count in th form of numerical data 
+logs - humab readable format with timestammp it will show . full journey flow will show
+trcaes- it will show like logs but its debugging inosde service, like services is calling to anothere services that how much time take take responf=d , what is the latency, bootlenecks so we can find entire thing : koging fframework : set teh error, trace, info, debug like .
+
+
+Metrics measure the overall health and performance of a system with numerical data points collected over time (e.g., CPU usage, request rates, error counts). They answer what is happening and serve well for alerting and identifying trends because they are compact and aggregated.
+
+Logs provide a detailed, timestamped record of discrete events and activities within the system. Logs help understand why something happened by offering contextual, human-readable data for troubleshooting specific issues.
+
+Traces show the journey of a request or transaction through multiple components or services, giving insight into the exact where and how in the flow of operations, enabling identification of bottlenecks or failures in complex systems.
+
+Example with a Payment Service
+Imagine a payment service handling online payments:
+
+Metric: The total number of payment transactions processed successfully per minute, or the rate of payment failures. (Shows what is going on, e.g., “Payment failure rate increased to 5%.”)
+
+Trace: A distributed trace follows a single payment request from the API gateway through authentication, payment processing, and confirmation services, showing delays or errors in any step. (Shows where the failure or slow down occurred in the payment flow.)
+
+Log: Detailed log entries record the error messages when a payment transaction fails, such as timeout errors from the payment gateway or invalid card details logged during that specific payment attempt. (Shows why the payment failed.)
+
+~~~~~~~~~~~~~~~~~~~~~~waht kind of metrics we used in the rela tie~~~~~~~~~~~~~~~~~~~~````
+infrasture related liek cpu, memory and other
+2. kuberenet worker componets, kublele
+docker and kuberenets 
+microseices like - claiim serives and payment service
+kafa related like kafka count insted of Queues (producer and consumer ) 
+
+
+~~~~~~~~~~~~~monitoring and observability~~~~~~~~~~~``````
+monitor: what happened to sysyem (red/ yello things in the dashboard how promoquery running beyond that)
+like what issue server ran out of cpu, memory 
+
+bservability: we can check ober here like how we can check the issue, why the cpu is crossed or disk space reached 85%
+
+~~~~~~~~~~~~~``````how you custom logs and netrics applictaion~~~~~~~~~~~~~~~~```````
+by default some of teh logs will not come by default like : we can get the id or json for CPU, memory and diskspace/
+ex: i wan to count of payment docne, paynet failure from paymnet service in ine day 
+- so need to collabarate with developmnet team , developer add teh cgauge counter metrics in there application so its can scare the payment count based one request and send to dashboard.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~have you worked with observability ~~~~~~~~~~~~~~~~~~~~~``
+yes payment service is going down due to high request 
+- collabarate with developent team , set teh error(info/debug,debug) in log4j (logging framework for java) so that we can get all logs 
+- so that i check the logs and traces to get deep understand the floe like what happening inside service is there any bcakend services error like latency or bottleneck issue.
+
+~~~~~~~~~~~~~~~~~~~~~~`push based and pull based monitoirng~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+scrape metrics from /metrics 
+/node 
+
+target sends data to collector : push based 
+pull basded : prometheoues scare or pull metrics from traget (in node we mention nodeexporter- cpu,memoru, loki for logs, forv travve - )
+pull based in prometheous.yaml we mention the all target machine ips and port under scare_config fiel so that  it will pull)
+push based : ex: telgreaf 
+
+like ansibke is : push basd mechanisume 
+check and puppet : pull based mechanisume (agent should be running on each server)
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`which tools  used to build your observabity stack~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+for metrics:
+prometheous: 9001 - for pull based, as datasource -timeseries datsource using for scarping matrics
+grafana - for visulaztion data over here like dahboard (graph, columns, pie charts  - define  the alert (prometheous alert manager) for alert 
+logs - ELK stack (elastic ) for visulation we can use the kibana dashboard
+traces - we are using teh eager 
+opentelmetery - developer using teh opentelmetry for instrumnet metrics (example gauge counter to count te paymemnt )
+
+~~~~~~~~~~~``user facoing te slowness~~~~~~~~~~~~~~~~``
+confir wehere only one user or ho many users, is there paticular region user facing or all user facin like any internet issue,
+network issue, latency issue (make edge service)
+- chec in the logs error not printing recheck with put debug and recheck
+- recheck with CPU and memory (any process taking more cpu, third party, tell to clouad team , third party team, chedk in appd also.
+- check with entire journt trace fro meage 9use sylog also ) we application and db logs alo s(is ther any db connection issue , connetion poll excausted, particular user of db has locked )- amy long running query -kill ad modufy teh indexing for table .
+
+~~~~~~~~~~```how you trace the request accross multiple microserices~~~~~~~~~~~~~~~~~~~~~~~~~~~~`````
+qoute creation>underwting>scrunity?applications ubmttion>policy convertter 
+-
+1. Quote Creation: The insurer provides a quote based on preliminary details such as the type of coverage, risk factors, and policyholder information.
+2. Underwriting: This critical phase involves detailed risk assessment where the insured's data is verified, risk factors evaluated (health, driving, credit, etc.), and premium prices are determined. The underwriter may approve or reject the application or request additional info.
+3. Scrutiny (Application Review): The submitted application is carefully reviewed and verified for completeness, accuracy, and eligibility according to company standards. This includes validating documents and confirming the coverage requested.
+4. Application Submission: The policyholder formally submits the completed application with all required documents.
+5. Policy Issuance / Conversion: Once approved, the application converts into an active insurance policy, policy documents are generated and sent to the policyholder, and payments are processed
+
+  Workflow Stage	                          Workflow Activity	                                Typical Trace Log Errors
+1. Quote Creation	                               Calculate premium estimate                      Calculation errors, missing input data
+2. Underwriting                                	 Risk evaluation and approval	                    Risk rejection, missing applicant data
+3. Scrutiny / Review	Document verification,     data validation	                                 Validation failure, missing docs
+4. Application Submission	                       Receive completed,                          signed application	Incomplete submission, format errors adcatthapidown
+Policy Issuance	Generate policy documents and notify customer	PDF generation error, email delivery failure
+5. Payment Processing	                           Process initial premium payments	                 Payment gateway timeout, declined payments
+
+jager is teh distrubutaion tracing tool :
+for request recived -trace id is generated (under span id: issue with services, db issue)- for every trace trcae id created it will forward to next microserices like it will move 
+- span id will create with that we can info about the trace like in which place request took more time.
+- we can find which place trace or in which microservices we willl get error .
+
+~~~~~~~~~~~~~~~~~~~~~~~~pod craeshed duw to OOM killed~~~~~~~~~~~~~~~~~~~~~~
+1. i will ceck and confirm OOM killed "kubectl get pods" - crashloopback so OOM error
+2. i will check the logs of teh pod and send the logs to developer (thred dump and heap dump threds)
+3. i will check the logs at that time of crash , in lower enviornment i will make the issue one more time to QA team send more request (load testing)
+i will check the this error is comming reguralerl or random (will check historical in prometheous and appd). 
+if regularly comming - i will increase teh limit of memory in deploymnet.yaml (kubectl get deploymnet , describe deploymnet) increase and deploy teh code .
+
+~~~~~~~~~~~~~~~you got alert @2AM that recahed 85%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
+ok once in while cpu hit or disk space recahed the 85% ok 
+so make 2 things:
+1. alert tuning : if the cpu reches the 85% continusly in 5 or 2min send an alert.
+isk reached the 85% in last 5 min send alert (ok, alert , crticle) above 90% remender1, reminder2, reminder3
+2. SLO based (service level object oriented thing)
+if we are getiing the 1% erroor we are gettiing in last 5 min send alert . ex: 10 million request ok but in last 5 mj 1 million failed request send aler where as 100 r 1000 request failed leaved it.
+85% disk utilztaion sustening 5 min. send alert > sudde spike in the application leave it.

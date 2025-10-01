@@ -1,0 +1,135 @@
+docker install:
+how to remove this overalay2 , co
+------------------------
+journalctl -u docker.service --since "30 minutes ago"/ today   --no-pager | grep -i error   (full o/p will show)
+$journalctl -fu docker.service - view live docker logs 
+
+  - starting the docker applictaion >loading container>default bridge network (docker0 network interface)>api listen on d/run/docker/sock>started teh docker application container engine
+-By default, journalctl uses the less pager, which can truncate long lines.
+  $journalctl -u docker.service --no-pager
+
+  journalctl -u docker.service --since today
+  - docker straup issue, dckerd startuup, dcker crash, any pernisstion issue , connection rest by peer
+
+------------------ 
+    docker logs --since "2025-07-30T14:00:00" --until "2025-07-30T18:00:00" -t <container_name>
+1. one module resolver error - 500 nternal server error.
+    system being unabelto locate that service endpoint.
+permisstionin issue or disk space issue 
+wrong request (service uri wrong or path is wrog)
+ $docker logs -ft <containerid> | grep "reolver erro"      
+ $ docker logs --tail 300 <container id> >redirectpage
+-------------------------------------------
+    tail -c 2G <continerid> > redirect
+    tac <> | split -b 2G adpater externalizer 
+truncate -s 0 <container is> - flush out
+------------------------------------------------
+    docker exec -it <conatiner name> /bin/bash   or /bin/sh 
+
+2. added the ps -aux --sort=-%cpu,-%mem > add it in one file>permisstion>save>add the crontab > * * * * * sh <absoulate pat> 
+
+    ------------------------------------------------------------
+    dmesg = display message buffer of the Linux kernel ring.
+
+Shows hardware, driver, and kernel-related logs:
+e.g., memory issues, device disconnects, file system errors, OOM kills, Docker crashes.
+
+
+-------------------------------------------------------------------------
+dmesg >any kill process, oom memory issue with process killed
+  View Kernel/System Logs (dmesg)
+Command	Purpose	Sample Output
+dmesg	Kernel logs (raw uptime)	[ 245.1234] eth0: link up
+dmesg -T	Human-readable timestamps	[Fri Aug 1 12:30:00 2025]
+dmesg -T | grep -i oom	Check if memory kills happened	Out of memory: Kill process 1234 (java)
+dmesg -T | grep -i kill	Any process killed	Killed process 4567 (node)
+`dmesg -T | grep -Ei 'nfs	blk	xfs
+dmesg -T | grep -i panic	Kernel panic logs	Kernel panic - not syncing
+dmesg -T | tail -30	Last 30 kernel messages	Useful after crash
+docker events → live Docker system event logs
+
+--------------------------------------------------
+1.no space left on device
+- df -h, docker system df, container rpune/network prune, volume prune .
+docker system df --verbose for detailed space usage per image, container, and volume.
+Set appropriate resource limits when starting containers (--memory, --cpu).
+$ docker run --memory="512m" --cpus="1.5" --name mycontainer myimage
+
+o/p:
+docker container prune         # Remove stopped containers  
+docker image prune -a          # Remove unused images  
+docker volume prune            # Remove unused volumes  
+docker system prune -a --volumes  # Remove everything (use with caution)
+----
+docker system df               # Docker-specific usage  
+df -h                          # Overall system disk space
+------
+Use .dockerignore to exclude unnecessary files
+Combine RUN commands to reduce layers
+Use multi-stage builds to keep final image lean
+---
+
+2.js heap memory out 
+- Tune Node.js memory with --max-old-space-size
+dmesg -T | grep -i oom                (Container exits with code 137)
+docker logs : js heap out memory add the max-old-space 
+set resouvce lmiit:
+deploy:
+  resources:
+    limits:
+      memory: 512M
+
+o/p : Set alerts>implement autoscale>  Profile and tune application code to avoid memory leaks: crete swap >Use .dockerignore files to exclude unnecessary files during image builds to keep images lean
+Scan container images for vulnerabilities by trivy.
+
+---------
+Check container logs for errors and warnings about memory, CPU, or disk usage.
+Monitor live resource usage (docker stats) and correlate with log timestamps.
+Review host and Docker daemon logs for system-level OOM or resource constraint events.
+Utilize monitoring platforms (AppDynamics, Grafana, CloudWatch) for comprehensive tracing and metrics aggregation.
+Confirm root cause by matching spikes or failures in logs with resource exhaustion indicators.
+
+3. 500 error resolver error 
+4. CORS error
+ccces-control alow orgin* > configuration file>./apachectl -s stop and start.
+5. manager giave docker system prune >docker save -o <name.tar> <fullimage withrepo
+  - scp tar user@ip:whereneedtoplace<tmp>
+ssh user@ip> then docker load -i tar
+
+6. connection reset by peer:
+images is deleted save and load we did .
+
+7. not added in the hdfczip file
+solu: synthetic key doent have deploymnet permisstion for folder (if any new deploymnet new folder creation )
+post read access to user:deploymnet group - its inclusing with this.
+
+8.msit no tennat so msit and prod tennat is same for testing keeting teh uat impex.json in the msit.
+
+9.externalizer conatiner is not starting (safter its going down)
+- username is disbaled , username loacked saked team to unlock, request queus depth incraesed cleared, password expires - DQserver.ini 
+
+10. caetion of docker run commands - invalid: Entitystoreendpoint, please input correct url 
+- proxy is blocking the some yrl 
+/etc/enviornmnet and pass the -e <ur> while docker run command 
+
+11. docker --version what ?
+
+
+dcoker lifecycle error:
+OCI runtime - create failed	Bad permissions or invalid entrypoint  (cmd is executed so it comes out , ecternaliser password expires 
+container exited immediately	Wrong CMD or ENTRYPOINT
+-------------------------------------
+docker timeing:
+dicker run -e TZ="Asia/kolkatta" or add in the dockerfile (like ENV TZ=Asia/Kolkatta b
+
+------------------------------------
+
+tar -cvzf <archive-name>.tar.gz <directory-or-files>
+xzvf- for extract 
+tar -xzvf archive.tar.gz -C /apps/arun
+-------------------------------------------------------
+
+
+    
+
+    

@@ -1,0 +1,154 @@
+1. abhishek veeramall
+2. imran
+3. all things from books and laptops 
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~contaier exoit immediatly after run docker ontainer:~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+what were runninh the process inside CMD or ENTRYPOINT that is short life process ex: echo "hello" once its complte docker will exit 
+- if the configuration changes : extermalizer container going dowm - dq1ini passwd expired? so we changed the password so its came up.
+- check docker logs 
+CMD ["nginx -g deamon off;"]
+
+sometimes docker container will go dwn for "js heap out memory so we need to delet "echo -3 /proc/mem page demt, inode dents and both> inial and maxixmun heao size/
+single process- if process complets/crash container exit.
+OOM ,configuration(passwd expired)
+
+~~~~~~~~~~~~~~~~~~~expose~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~```
+expose instruction/keyword
+for socumention >evryoe get to know the from which port application listning.
+like metadata.
+expose taken by -p (keyword mapping hostport:containerport)
+
+only documetion?
+no delaing with docker-compose :
+one service talking to db (backend to db ) - there expose 8080 with that port they can access.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~port not acccseebale affter port opening~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~```
+port mapping dine?
+2. recheck the docker run the commaond port, 
+3. if the port is open or any other application running (like jenkins8080, tomcat 8080 deefult)  - netstat -tulnp > if use i chage the port - host:container 
+4. Anay firewall status "ufw status " so just disbale and access the applictaion
+5. in application added the like app.listne (80, 127.0.0.1) - application access with this port only need to set the *
+                                      need to update (tell developer to write code like app.listner (80, 0.0.0.0)
+         in timat we added for the contex.xml so that manger ui we will gte.
+ curl localhost 80 so curl 8080 its fine 
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~Data lost when container stops and restrat ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~``
+docker volume - ephemeral in nature- sort lived 
+stop and restrt dat inside docker will lost  so crete volume and attch that volume to container while running the container
+- docker run -v mydat:/apps/ <container name>
+
+--mount local:docker path
+
+~~~~~~~~~~~~~~~~~~~~`ypu made you change , rebuild the image but chnages not reflecting~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
+docker build --no-cache -t <tag> .
+dockerfile path, -f dockerfilepath.
+layer caching -on top of layer it will build 
+- this occures very -very rear.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~application crashes with permisstion denaied in the container~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
+in dockerfile 
+USER root 
+by defukt it will run teh root only dockerfile 
+
+localhost:its working 
+using teh ome iuser that full l permisstion.
+devops enginerr use the CMD app.py file so app.py file have app_user:app_user permisstion so in dockerfile USER devops_user so that due to permisstion issue its comming thepermisstion denaied
+- so add the your user into the docker group as wll "usermod -aG docker app_user" the "newgrp docker" or log out and log inback. or use the chmod +x app.py (so the all user have the access )
+- this is mainly focus on which user using teh dockerfile and CMD file have which owner and which group and what about the permisstion.
+so :::: just give executable permisstion or simpley add user into docker group.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~dicker host running out of disk space~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~``
+no space left on device
+- check docker system df and docker system prune -a (all stpped ctainer,all build cache images which is no container is using that image(dangling image- none tag images overight image so its none tag), volume that no container is using that volume, and network)
+ - cd /var/lib/dockr.conatiner >docker truncate -s 0 <container.json> to flush out
+- remove the dangling images an stopped container, no use te vlumes and network
+- docker container/volume/network prune. docker image prune (for dangling images)
+- check again by "docker system df "
+- write log rotation script 
+
+~~~~~~~~~~~~~how you debug the live container~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+docker exec -it <conatiner> /bin/bash 
+use only "sh" also if /bin/bash intrpreter not there menas 
+exec -it is moved inside container (docker run -it command craete container and open with intercative mode if container live mens use the docker exec -it )
+
+~~~~~~~~~~~~~~~~~~~~~~~~~`WHICH container regisrty used in your organization~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~``
+usually in the organization no one will use the dockerhub public registry even teh private registry also no one will use due to rate limiting.
+enterprise level use: ECR, ACR and quay.io (redhat maintaineg the container registry ) or ghcr.io (git hub container registry ) in my project we are using teh ghcr.io using .
+
+-docker hub create private and docker log>tag the image>docker push to docker hub.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~explain diff between the CMD and ENTRYPOINT~~~~~~~~~~~~~~~~~~~~~~~~~~~`
+CMD and ENTRYPOINT is instrucation or keyword
+- you can use multiple CMD but dpcker will run last CMD, CMD can override in the docker run command menas in runtime , dockerfile constit atlease one CMD in teh dockerfile.
+- ENTRYPOINT not override 
+ex: CMD/ENTRUPOINT ["echo", "hello"]
+dcker build and dicker run image   - o/p is hello in both CMD and ENTRYPOINT
+
+1. docker run image_cmd echo "my name is cmd i can override"
+o/p : my name is cmd i can override            note: but in the dockerfile inside CMD hello is there .
+1. d0cker run image_ep  world    - i pass the arguments 
+o/p : is the "hello world"   its not override insted of that appended with what is there inside entrypoint []
+
+
+docker run image_ep world/
+- i will get the error OCI runtime failed becuase i passed the argumnets that will not overrides exsting one inside what its there in ENTRYPOINT
+where as CMD hello (it will remove like heloo and add hello world)
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~what docker commnds you are using teh daily~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~``
+docker ps , docker ps -a, docker cotainer prune, docker image prune, docker volume/network prune, docker system df , docker save -0 image.tar <full imagename> and docker losd -i .tar fiel the destinartion.
+docker stop <containername/id> , docker start . docker rm -f, docker images, dcoker build -t imagename location , docker run --no-cache --name <cotainer_name> -itd -p <hostport:containerport> image , docker inspect <conatiner_is> | grep <docker image id>, docker stats ,docker attch container imagename, docker logs <containerid>
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~when you will remove container forcefully~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~````
+docker ps -a
+docker rm <conatiner >, docker rm -f <conatiner name/id>
+SIGKILL - forcefully kill running container kill , gracefully SIGTERM singnal stop and remove container.
+when?
+when container is stuck or unresponsive , when conatiner is restarting te container, when we are running ci/cd pipeline once build done i wan to rmeove the comtainer.
+
+~~~~~~~~~~~~~~~`issue~~~~~~~~~~~~~~~~~````
+
+- container port laredy existes:
+- container name already in use : container name is unique 
+- js heap out of memory and nos space left on device .
+- horixentalwe increse soem more container (8085:8080 and 8090:8080 like that and added the 8085 and 8090 in the under 8080 listmer so trafiic will go from 8080 to both host port.
+- craeted 2 more instances add teh setiup >build the image and run the cntainer and postman we will check with that alb:8080 , ip:host port.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+so :
+CMD- default argumnets wgat we passed that override 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+overlay2 shall i remove?
+

@@ -1,0 +1,13 @@
+aws:
+1. server went down 3/2 check ? hwy what is the 3/3
+2. drop main to take ami bckp 
+3, asked port opening for (whitelisting ) for ops to pscsp (indised pscsps ops ipa nd port addedd)
+4. s3 movment script before zip and move everyday morning via cron
+5. asked the port opeing for DB connection (they created inlinepolicy and add somerole and attached to that rule)
+6. craete load balancer amd added ipand port under target 
+5. we asked the scaling of ec2 instamce (verticle an dhorixwntal)
+6. rds upgradtion 
+7.how the AWS flow will hapen once drop mai (sr createrd 48 hours SLA, CR craeted >CAB meeting>approved>implement then roolback
+8. iam craetion of users and adding teh permisstion read only authetication with mfa
+9. monitring metrics voa cloudwatch 
+
