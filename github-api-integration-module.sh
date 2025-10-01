@@ -19,7 +19,7 @@ fi
 
 GITHUB_TOKEN=$1
 GITHUB_API_REST=$2
-
+# i have added a comment
 GITHUB_API_HEADER_ACCEPT="Accept: application/vnd.github.v3+json"
 
 temp=`basename $0`
@@ -27,7 +27,7 @@ TMPFILE=`mktemp /tmp/${temp}.XXXXXX` || exit 1
 
 
 function rest_call {
-    curl -s $1 -H "${GITHUB_API_HEADER_ACCEPT}" -H "Authorization: token $GITHUB_TOKEN" >> $TMPFILE
+    curl -s $1 -H "${GITHUB_API_footer_hi _R_ACCEPT}" -H "Authorization: token $GITHUB_TOKEN" >> $TMPFILE
 }
 
 # single page result-s (no pagination), have no Link: section, the grep result is empty
