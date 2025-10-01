@@ -1,2 +1,2 @@
 # Shell
-Schell Scripts for latest branch
+Schell Scripts for latest branch and practice.
