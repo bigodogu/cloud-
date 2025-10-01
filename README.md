@@ -1,2 +1,6 @@
 # Shell
-Schell Scripts
+Shell Scripts
+
+
+updated version
+updated readme
