@@ -1,6 +1,6 @@
 #!/bin/bash
 ################################
-# Author: Abhishek
+# Author: Abhishek-Copied-SDK
 # Version: v1
 #
 #
@@ -9,6 +9,7 @@
 # Usage:
 #   Please provide your github token and rest api to the script as input
 #
+#Updated for test
 #
 ################################
 
