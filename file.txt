@@ -1,1 +1,2 @@
 This is simple textfile
+Added a newline
