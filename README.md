@@ -1,5 +1,2 @@
 # Shell
-Schell Scripts for PRACTICING
-
-
-FOR
+Schell Scripts
