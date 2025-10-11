@@ -1,2 +1,5 @@
 # Shell
-Schell Scripts
+Shell Scripts
+
+# Spelling Mistakes has been corrected
+
