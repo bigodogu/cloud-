@@ -1,2 +1,2 @@
 # Shell
-Schell Scripts is for reference.
+Schell Scripts is for reference and practice.
