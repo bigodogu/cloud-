@@ -1,2 +1,2 @@
 # Shell
-Schell Scripts for devops Engineers for Automation
+Schell Scripts for devops Engineers to Automation Manual tasks
