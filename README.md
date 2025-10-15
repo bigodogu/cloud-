@@ -1,3 +1,3 @@
 # Shell
-Schell Scripts for understanding
+Schell Scripts for understanding and practise
 
