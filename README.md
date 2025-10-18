@@ -1,2 +1,11 @@
-# Shell
-Schell Scripts
+# Devops Engineer RoadMap
+-> Software and Types of Software, SDLC, what is Devops, Why Devops, Day to Day Activities of Devops Engineer.
+-> what is physical server & Virtualization , How virtual Servers are created on top of Physical server.
+-> Linux Fundamentals, Shell Scripting, Basic Networking Concepts.
+-> Git,Github
+-> Jenkins ( Continous Integration & Continous Delivery/Deployment) 
+-> Docker 
+-> Kubernetes 
+-> AWS/Azure/GCP sevices 
+-> Terraform 
+-> Python For Devops Engineers
