@@ -1,7 +1,10 @@
 #!/bin/bash
 ################################
 # Author: Abhishek
-# Version: v1
+# Version: v2
+#
+# #updated by Adithya sekhar
+# Date:22/10/25:
 #
 #
 #
