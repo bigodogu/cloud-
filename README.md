@@ -1,3 +1,3 @@
 # Shell
 Schell Scripts
-Bindasp
+bindasp
