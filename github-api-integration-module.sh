@@ -1,7 +1,7 @@
 #!/bin/bash
 ################################
 # Author: Abhishek
-# Version: v1
+# Version: v2
 #
 #
 #
@@ -10,6 +10,7 @@
 #   Please provide your github token and rest api to the script as input
 #
 #
+#udpates to be done:
 ################################
 
 if [ ${#@} -lt 2 ]; then
