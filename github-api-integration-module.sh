@@ -1,9 +1,11 @@
 #!/bin/bash
 ################################
-# Author: Abhishek
+# Author: Abhishek Veeramalla
 # Version: v1
 #
+#Abhishek anna, I'm learning so much from your courses. 
 #
+#Please approve my PR :) Thanks
 #
 # This script will help users to communicate and retrieve information from GitHub
 # Usage:
