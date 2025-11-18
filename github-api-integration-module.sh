@@ -42,7 +42,6 @@ else
     # yes - this result is on multiple pages
     for p in `seq 1 $last_page`; do
         rest_call "https://api.github.com${GITHUB_API_REST}?page=$p"
-    done
-fi
+    done at $TMPFILE
 
-cat $TMPFILE
+modified
