@@ -1,2 +1,2 @@
 # Shell
-Schell Scripts testing fetch
+Schell Scripts tested pull successfully
