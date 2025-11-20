@@ -47,12 +47,4 @@ fi
 
 
 
-cat $TMPFILE
-
-
-
-
-
-############### Hello From Git HUb #########
-
-Hi I am learing git hub with abhishek v
+cat  $TMPFILE
