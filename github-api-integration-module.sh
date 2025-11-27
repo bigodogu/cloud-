@@ -9,8 +9,10 @@
 # Usage:
 #   Please provide your github token and rest api to the script as input
 #
-#
+#this for testing how fork works here
 ################################
+
+
 
 if [ ${#@} -lt 2 ]; then
     echo "usage: $0 [your github token] [REST expression]"
