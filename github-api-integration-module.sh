@@ -1,6 +1,6 @@
 #!/bin/bash
 ################################
-# Author: Abhishek and co-authored by Maaz
+# Author: Abhishek who is working on the main branch
 # Version: v1
 #
 #
