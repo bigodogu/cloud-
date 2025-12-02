@@ -1,6 +1,6 @@
 #!/bin/bash
 ################################
-# Author: Abhishek who is working on the main branch
+# Author: Abhishek who is working on the main branch and Maaz is working on the feature branch
 # Version: v1
 #
 #
