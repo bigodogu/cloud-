@@ -11,6 +11,9 @@
 #
 #
 ################################
+########################
+########################
+### Added a comment to check git fetch vs pull
 
 if [ ${#@} -lt 2 ]; then
     echo "usage: $0 [your github token] [REST expression]"
