@@ -3,7 +3,8 @@
 # Author: Abhishek
 # Version: v1
 #
-#
+# 
+ # no commit 
 #
 # This script will help users to communicate and retrieve information from GitHub
 # Usage:
@@ -46,3 +47,6 @@ else
 fi
 
 cat $TMPFILE
+
+
+# assesment 1 - under process
