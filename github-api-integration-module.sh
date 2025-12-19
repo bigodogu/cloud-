@@ -9,7 +9,7 @@
 # Usage:
 #   Please provide your github token and rest api to the script as input
 #
-#
+# amarjyoti.lahkar@gmail.com - learning fork and PR
 ################################
 
 if [ ${#@} -lt 2 ]; then
