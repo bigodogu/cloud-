@@ -1,2 +1,2 @@
 # Shell
-Schell Scripts for refrence.
+Schell Scripts for refrence and practice labs.
