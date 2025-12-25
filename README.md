@@ -1,2 +1,2 @@
 # Shell
-Schell Scripts
+Repo having Schell Scripts files
