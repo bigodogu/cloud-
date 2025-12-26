@@ -4,4 +4,4 @@ Schell Scripts
 
 Practice fork
 
-Practice git fetch
+Practice git fetch and Pull
