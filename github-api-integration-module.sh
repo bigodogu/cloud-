@@ -9,7 +9,7 @@
 # Usage:
 #   Please provide your github token and rest api to the script as input
 #
-#
+# updated by sai_beekle for git fork assignment
 ################################
 
 if [ ${#@} -lt 2 ]; then
