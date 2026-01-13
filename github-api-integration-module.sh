@@ -1,7 +1,7 @@
 #!/bin/bash
 ################################
-# Author: Abhishek
-# Version: v1
+# Author: Banshika
+# Version: v2
 #
 #
 #
@@ -11,7 +11,7 @@
 #
 #
 ################################
-
+echo "This is my new version repo -> need to update the desc"
 if [ ${#@} -lt 2 ]; then
     echo "usage: $0 [your github token] [REST expression]"
     exit 1;
