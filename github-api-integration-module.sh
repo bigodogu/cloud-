@@ -9,7 +9,7 @@
 # Usage:
 #   Please provide your github token and rest api to the script as input
 #
-#
+# Test modifiation for assignment 1 to learn forking 
 ################################
 
 if [ ${#@} -lt 2 ]; then
