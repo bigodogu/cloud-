@@ -1,2 +1,2 @@
 # Shell
-Schell Scripts
+Schell Scripts for UAT & testing enviornments
