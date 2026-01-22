@@ -1,2 +1,2 @@
 # Shell
-Schell Scripts we are using for the test purpose
+Schell Scripts for UAT & testing enviornments
