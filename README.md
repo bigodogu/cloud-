@@ -1,2 +1,2 @@
 # Shell
-Schell Scripts are used to execute.
+Schell Scripts for reference and good to execute
