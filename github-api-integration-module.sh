@@ -1,6 +1,6 @@
-#!/bin/bash
+i#!/bin/bash
 ################################
-# Author: Abhishek
+# Author: Tejas
 # Version: v1
 #
 #
