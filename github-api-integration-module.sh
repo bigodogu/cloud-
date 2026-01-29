@@ -1,48 +1,46 @@
 #!/bin/bash
-################################
-# Author: Abhishek
-# Version: v1
-#
-#
-#
-# This script will help users to communicate and retrieve information from GitHub
-# Usage:
-#   Please provide your github token and rest api to the script as input
-#
-#
-################################
+set -euo pipefail
 
-if [ ${#@} -lt 2 ]; then
-    echo "usage: $0 [your github token] [REST expression]"
-    exit 1;
+GITHUB_TOKEN="${GITHUB_TOKEN:-}"
+GITHUB_API_REST="${1:-}"
+
+# Validation
+if [[ -z "$GITHUB_TOKEN" ]]; then
+  echo "Error: GITHUB_TOKEN environment variable not set" >&2
+  echo "Usage: GITHUB_TOKEN=ghp_xxx $0 /users/octocat" >&2
+  exit 1
 fi
 
-GITHUB_TOKEN=$1
-GITHUB_API_REST=$2
+if [[ -z "$GITHUB_API_REST" || ! "$GITHUB_API_REST" =~ ^/ ]]; then
+  echo "Error: Provide REST path starting with / (e.g., /users/octocat)" >&2
+  exit 1
+fi
 
-GITHUB_API_HEADER_ACCEPT="Accept: application/vnd.github.v3+json"
+TMPFILE=$(mktemp) || { echo "Temp file creation failed"; exit 1; }
+trap 'rm -f "$TMPFILE"' EXIT
 
-temp=`basename $0`
-TMPFILE=`mktemp /tmp/${temp}.XXXXXX` || exit 1
-
-
-function rest_call {
-    curl -s $1 -H "${GITHUB_API_HEADER_ACCEPT}" -H "Authorization: token $GITHUB_TOKEN" >> $TMPFILE
+rest_call() {
+  curl -f -s "https://api.github.com$1" \
+    -H "Accept: application/vnd.github.v3+json" \
+    -H "Authorization: token $GITHUB_TOKEN" >> "$TMPFILE"
 }
 
-# single page result-s (no pagination), have no Link: section, the grep result is empty
-last_page=`curl -s -I "https://api.github.com${GITHUB_API_REST}" -H "${GITHUB_API_HEADER_ACCEPT}" -H "Authorization: token $GITHUB_TOKEN" | grep '^Link:' | sed -e 's/^Link:.*page=//g' -e 's/>.*$//g'`
+# Get last page from Link header
+last_page=$(curl -sI "https://api.github.com${GITHUB_API_REST}" \
+  -H "Authorization: token $GITHUB_TOKEN" 2>/dev/null \
+  | grep '^Link:' | grep -o 'page=[0-9]*>; rel="last"' | grep -o '[0-9]*' || echo "")
 
-# does this result use pagination?
-if [ -z "$last_page" ]; then
-    # no - this result has only one page
-    rest_call "https://api.github.com${GITHUB_API_REST}"
+if [[ -z "$last_page" ]]; then
+  rest_call "$GITHUB_API_REST"
 else
-
-    # yes - this result is on multiple pages
-    for p in `seq 1 $last_page`; do
-        rest_call "https://api.github.com${GITHUB_API_REST}?page=$p"
-    done
+  for p in $(seq 1 "$last_page"); do
+    rest_call "${GITHUB_API_REST}?page=$p"
+  done
 fi
 
-cat $TMPFILE
+# Output result
+if command -v jq &>/dev/null; then
+  jq . "$TMPFILE"
+else
+  cat "$TMPFILE"
+fi
