@@ -1,2 +1,3 @@
-This is my first pull requests.# Shell
-Schell Scripts
+# Shell
+Schell Scripts for reference and practice
+
