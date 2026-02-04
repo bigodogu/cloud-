@@ -5,9 +5,9 @@
 #
 #
 #
-# This script will help users to communicate and retrieve information from GitHub
+# This script will help users to communicate and retrieve information from GitHub users
 # Usage:
-# Please provide your github token and rest api to the script as input as
+# Please provide your github token and rest api to the script as input 
 #
 #
 ################################
