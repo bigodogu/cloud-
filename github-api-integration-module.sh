@@ -3,13 +3,13 @@
 # Author: Abhishek
 # Version: v1
 #
-#
+#Another change made in the file
 #
 # This script will help users to communicate and retrieve information from GitHub
 # Usage:
 #   Please provide your github token and rest api to the script as input
-#
-#
+# git fetch versus git pull change
+# This is the change made in the file 
 ################################
 
 if [ ${#@} -lt 2 ]; then
